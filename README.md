@@ -1,19 +1,8 @@
-# Containing Files
-
-1. The LICENSE file:
-In most cases, the license for SAP sample projects is `Apache 2.0`.
-
-2. The REUSE.toml file: 
-The [Reuse Tool](https://reuse.software/) must be used for your samples project. You can find the REUSE.toml in the project initial. Please replace the parts inside the single angle quotation marks < > by the specific information for your repository.
-
-3. The README.md file (this file):
-Please edit this file as it is the primary description file for your project. You can find some placeholder titles for sections below.
-
-# Session ID - Session Title
+# XP268 - Govern the agent economy: Secure A2A using SAP's agent gateway
 
 ## Description
 
-This repository contains the material for the SAP TechEd 2026 session called Session ID - Session Title.  
+This repository contains the material for the SAP TechEd 2026 session called XP268 - Govern the agent economy: Secure A2A using SAP's agent gateway.
 
 ## Overview
 
@@ -21,24 +10,29 @@ This session introduces attendees to...
 
 ## Requirements
 
-The requirements to follow the exercises in this repository are...
+In general SAP-managed landscape (BAIP)
+
+- SAP for Me
+- Joule Work
+    - Joule Studio
+    - SAP's Agent Gateway
+- SAP loud Identity Service
+
+Google Cloud
+- Gemini Enterprise
+- Agent Platform
 
 ## Exercises
 
-Provide the exercise content here directly in README.md using [markdown](https://guides.github.com/features/mastering-markdown/) and linking to the specific exercise pages, below is an example.
-
-- [Getting Started](exercises/ex0/)
-- [Exercise 1 - First Exercise Description](exercises/ex1/)
-    - [Exercise 1.1 - Exercise 1 Sub Exercise 1 Description](exercises/ex1#exercise-11-sub-exercise-1-description)
-    - [Exercise 1.2 - Exercise 1 Sub Exercise 2 Description](exercises/ex1#exercise-12-sub-exercise-2-description)
-- [Exercise 2 - Second Exercise Description](exercises/ex2/)
-    - [Exercise 2.1 - Exercise 2 Sub Exercise 1 Description](exercises/ex2#exercise-21-sub-exercise-1-description)
-    - [Exercise 2.2 - Exercise 2 Sub Exercise 2 Description](exercises/ex2#exercise-22-sub-exercise-2-description)
-
-  
-**OR** Link to the Tutorial Navigator for example...
-
-Start the exercises [here](https://developers.sap.com/tutorials/abap-environment-trial-onboarding.html).
+- [Getting Started - Explore Landscape](exercises/ex0/)
+- [Exercise 1 - Create a Custom Agent in Joule Studio](exercises/ex1/)
+- [Exercise 2 - Register a client for Agent Gateway via SAP for Me](exercises/ex2/)
+    - [Exercise 2.1 - Configure SAP Cloud Identity Services and Test with Bruno](exercises/ex2#exercise-21-configure-oidc-application-and-test-with-bruno)
+    - [Exercise 2.2 - Explore Corporate IdP and Token Exchange](exercises/ex2#exercise-22-explore-corporate-idp-and-token-exchange)
+- [Exercise 3 - Configure Connection from Gemini Enterprise Agent](exercises/ex3/)
+    - [Exercise 3.1 - Deploy Agent on Google's Agent Platform and Configure Connection to SAP's Agent Gateway](exercises/ex3#exercise-31-deploy-agent-on-googles-agent-platform-and-configure-connection-to-saps-agent-gateway)
+    - [Exercise 3.2 - Connect Agent to Gemini Enterprise](exercises/ex3#exercise-32-connect-agent-to-gemini-enterprise)
+    - [Exercise 3.3 - Test End-to-End: Gemini Agent to AGW to Custom Agent](exercises/ex3#exercise-33-test-end-to-end-gemini-agent-to-agw-to-custom-agent)
 
 **IMPORTANT**
 
