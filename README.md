@@ -26,9 +26,9 @@ Google Cloud
 
 - [Getting Started - Explore Landscape](exercises/ex0/)
 - [Exercise 1 - Create a Custom Agent in Joule Studio](exercises/ex1/)
-- [Exercise 2 - Register a client for Agent Gateway via SAP for Me](exercises/ex2/)
-    - [Exercise 2.1 - Configure SAP Cloud Identity Services and Test with Bruno](exercises/ex2#exercise-21-configure-oidc-application-and-test-with-bruno)
-    - [Exercise 2.2 - Explore Corporate IdP and Token Exchange](exercises/ex2#exercise-22-explore-corporate-idp-and-token-exchange)
+- [Exercise 2 - Call the Custom Agent via SAP's Agent Gateway](exercises/ex2/)
+    - [Exercise 2.1 - Explore the client registration: Agent Gateway Consumer](exercises/ex2#exercise-21-explore-the-agent-gateway-consumer)
+    - [Exercise 2.2 - Test the Call Chain with Bruno](exercises/ex2#exercise-22-test-the-call-chain-with-bruno)
 - [Exercise 3 - Configure Connection from Gemini Enterprise Agent](exercises/ex3/)
     - [Exercise 3.1 - Deploy Agent on Google's Agent Platform and Configure Connection to SAP's Agent Gateway](exercises/ex3#exercise-31-deploy-agent-on-googles-agent-platform-and-configure-connection-to-saps-agent-gateway)
     - [Exercise 3.2 - Connect Agent to Gemini Enterprise](exercises/ex3#exercise-32-connect-agent-to-gemini-enterprise)
