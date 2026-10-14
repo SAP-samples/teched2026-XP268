@@ -12,30 +12,8 @@ The result is GCP-Agent-Generic, a transparent proxy agent that sits between Gem
 
 ![](./images/gcp-agw-flow.png)
 
-## Prerequisites
 
-Before you begin, assign the Agent Gateway consumer system to formations. Follow the guidance in the following SAP Help Portal document:
-
-https://help.sap.com/docs/CROSS_DOMAIN_AGENTS/85abb1b3c5734138826f02d079b04975/a0465991ba964736a781c275ddd852db.html?state=DRAFT&ai=true#loioc1e0e4ef9ce145eea314bbb9e9f61514
-
-- SAP BTP Subaccount
-  - SAP for Me
-  - SAP Business AI Platform
-  - SAP Cloud Identity Services
-- GCP Project
-  - [Google Cloud CLI](https://docs.cloud.google.com/sdk/docs/install-sdk)
-  - APIs enabled
-  - Gemini Enterprise license
-  - A user with the following roles:
-    - Agent Identity Admin
-    - Agent Identity Editor
-    - Agent Identity User
-    - Vertex AI User / Agent Platform User
-    - Service Usage Consumer
-
-## Recipe
-
-All commands are given for Windows PowerShell.
+> All commands are given for Windows PowerShell.
 
 ### 1. Create a Google Cloud Service Account
 
