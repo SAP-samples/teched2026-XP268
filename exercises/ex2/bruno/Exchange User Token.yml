@@ -1,0 +1,35 @@
+info:
+  name: Exchange User Token
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{ias_host}}/oauth2/token"
+  body:
+    type: form-urlencoded
+    data:
+      - name: grant_type
+        value: urn:ietf:params:oauth:grant-type:jwt-bearer
+      - name: assertion
+        value: "{{ias_user_token}}"
+      - name: resource
+        value: urn:sap:identity:application:provider:name:agent-gateway
+      - name: client_id
+        value: "{{client_id}}"
+      - name: client_secret
+        value: "{{client_secret}}"
+      - name: token_format
+        value: jwt
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar('agent_gateway_token', res.body.access_token);
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
