@@ -7,7 +7,6 @@ In this exercise, you will create a custom agent using Joule Studio. This agent 
 After completing these steps you will have created a new custom agent in Joule Studio with a basic configuration.
 
 1. Open Joule Studio from the Joule Work launchpad.
-<br>![](/exercises/ex1/images/01_01_0010.png)
 
 2. Create a new agent and give it a descriptive name (e.g., `xp268-agent-XX` where `XX` is your participant number).
 
@@ -20,7 +19,6 @@ After completing these steps you will have created a new custom agent in Joule S
 After completing these steps you will have registered your custom agent with SAP's Agent Gateway (AGW), making it reachable by external clients.
 
 1. Navigate to SAP's Agent Gateway configuration within Joule Work.
-<br>![](/exercises/ex1/images/01_02_0010.png)
 
 2. Register your Joule Studio agent as a backend target in the Agent Gateway. Note the AGW endpoint URL assigned to your agent — you will need it in later exercises.
 
