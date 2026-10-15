@@ -1,6 +1,6 @@
 # Exercise 2 - Call the Custom Agent via SAP's Agent Gateway
 
-In this exercise, you will first explore the Agent Gateway Consumer client setup in SAP for Me and Cloud Identity Services, then use Bruno to call your custom Joule agent through SAP's Agent Gateway.
+In this exercise, you will first explore the Agent Gateway Consumer client setup in SAP for Me and SAP Cloud Identity Services, then use Bruno API client to call your custom Joule agent through SAP's Agent Gateway.
 
 ## Exercise 2.1 - SAP for Me: Creating an Agent Gateway Consumer System
 
@@ -109,7 +109,7 @@ Reference documentation: [Configuring Client Credentials-Based Access for Third-
 
 After completing these steps you will have successfully called your custom Joule agent through SAP's Agent Gateway using the Agent Gateway Consumer.
 
-1. Open Bruno and import the provided collection from `exercises/ex2/bruno/`.
+1. Open Bruno and import the provided collection from [`exercises/ex2/bruno/`](./bruno/).
 
 2. Configure the environment variables in Bruno with your credentials:
    - `ias_host` — your IAS tenant URL

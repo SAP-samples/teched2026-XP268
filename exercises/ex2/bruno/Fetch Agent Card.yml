@@ -1,0 +1,18 @@
+info:
+  name: Fetch Agent Card
+  type: http
+  seq: 4
+
+http:
+  method: get
+  url: https://eu12.access.sapdas.cloud.sap/v1/a2a/customer.build:agent:s4-sales-order-agent-15396.sales-order-agent:v1/CAD0855aefe815a84c/.well-known/agent-card.json
+  headers:
+    - name: authorization
+      value: Bearer {{agent_gateway_token}}
+  auth: inherit
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
