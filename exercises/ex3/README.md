@@ -108,7 +108,7 @@ Confirm that you have completed all prerequisites before continuing.
    | `DOWNSTREAM_AGENT_URL` | Yes | The downstream A2A JSON-RPC endpoint — your Agent Gateway A2A URL for the Joule agent. |
    | `OAUTH_CLIENT_ID` | Yes | The `client_id` of the **SAP Cloud Identity Services application** from step 6. |
    | `OAUTH_TOKEN_HOST` | Yes | The SAP Cloud Identity Services tenant base URL, for example `https://<tenant>.accounts400.ondemand.com`. |
-   | `TOKEN_EXCHANGE_RESOURCE` | Yes | The resource/audience that identifies the downstream service to IAS, for example `urn:sap:identity:application:provider:name:agent-gateway`. |
+   | `TOKEN_EXCHANGE_RESOURCE` | Yes | The resource/audience that identifies the downstream service to SAP Cloud Identity Services, for example `urn:sap:identity:application:provider:name:agent-gateway`. |
    | `RUNTIME_SA_EMAIL` | Yes | The email of the service account created in step 3, `sap-ias-signer@<your-project-id>.iam.gserviceaccount.com`. |
    | `GE_AUTH_ID` | No | Set only when more than one Gemini Enterprise authorization is registered on the agent; it selects which forwarded token to read. Leave blank for this exercise. |
 

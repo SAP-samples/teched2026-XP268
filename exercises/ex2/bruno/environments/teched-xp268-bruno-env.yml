@@ -1,7 +1,7 @@
 name: teched-xp268-bruno-env
 variables:
   - name: ias_host
-    value: https://<ias-tenant>.accounts.ondemand.com
+    value: https://<sci-tenant>.accounts.ondemand.com
   - name: client_id
     value: ""
   - secret: true
@@ -10,5 +10,7 @@ variables:
     value: urn:sap:identity:application:provider:name:agent-gateway
   - name: agent_gateway_host
     value: https://<region>.access.sapdas.cloud.sap
+  - name: agent_ord
+    value: <agent-ord-id>
   - name: agent_tenant
     value: <agent-tenant-id>
