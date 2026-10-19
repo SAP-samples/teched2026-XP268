@@ -1,0 +1,44 @@
+info:
+  name: Invoke Agent
+  type: http
+  seq: 5
+
+http:
+  method: post
+  url: "{{joule_agent_a2a_server_url}}"
+  headers:
+    - name: authorization
+      value: Bearer {{agent_gateway_token}}
+    - name: content-type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "jsonrpc": "2.0",
+        "id": "{{$randomUUID}}",
+        "method": "message/send",
+        "params": {
+          "message": {
+            "role": "user",
+            "parts": [
+              {
+                "kind": "text",
+                "text": "Tell me on :-)"
+              }
+            ],
+            "messageId": "{{$randomUUID}}",
+            "kind": "message"
+          },
+          "configuration": {
+            "blocking": true
+          }
+        }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

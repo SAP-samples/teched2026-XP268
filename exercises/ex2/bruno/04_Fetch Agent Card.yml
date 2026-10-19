@@ -1,0 +1,18 @@
+info:
+  name: Fetch Agent Card
+  type: http
+  seq: 4
+
+http:
+  method: get
+  url: "{{joule_agent_agent_card_url}}"
+  headers:
+    - name: authorization
+      value: Bearer {{agent_gateway_token}}
+  auth: inherit
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
