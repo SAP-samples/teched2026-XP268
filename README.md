@@ -41,11 +41,17 @@ The end-to-end flow is captured in the reference architecture on the [SAP Archit
 ## Learning Objectives
 
 By completing these exercises, you will:
+
 ✅ Understand how SAP's Agent Gateway governs cross-provider agent-to-agent (A2A) communication
+
 ✅ Read how a calling agent is registered as an Agent Gateway Consumer in SAP for Me and SAP Cloud Identity Services
+
 ✅ Discover reachable and callable agents through the Agent Gateway using Agent Resource Discovery (ARD)
+
 ✅ Follow the OAuth token exchange and invoke an SAP agent end-to-end with the Bruno API client
+
 ✅ Integrate a Gemini Enterprise agent with SAP's Agent Gateway using a three-legged OAuth flow
+
 ✅ Trace a secure, governed A2A call from Google Gemini through to a Joule agent on the SAP side
 
 ## Contributing
