@@ -1,6 +1,6 @@
 # Exercise 2 - Call the Custom Agent via SAP's Agent Gateway
 
-In this exercise you call the already-deployed custom Joule agent through SAP's Agent Gateway. The setup in SAP for Me and SAP Cloud Identity Services was **completed in advance on your behalf** — you cannot perform it live in the workshop, but you will **read through** what was configured so you understand the trust chain. You then switch to a **developer persona**: you discover the callable agent via Agent Resource Discovery (ARD) and invoke it with the Bruno API client.
+In this exercise you call the already-deployed Joule agent through SAP's Agent Gateway. The setup in SAP for Me and SAP Cloud Identity Services was **completed in advance on your behalf** — you cannot perform it live in the workshop, but you will **read through** what was configured so you understand the trust chain. You then switch to a **developer persona**: you discover the callable agent via Agent Resource Discovery (ARD) and invoke it with the Bruno API client.
 
 The sub-steps:
 - **2.1 & 2.2** — *read-through* (admin persona): understand the Agent Gateway Consumer and the SAP Cloud Identity Services OIDC application that were created for you.
@@ -77,7 +77,7 @@ Three formations must be assigned in order. Each formation produces a configurat
 2. Enter a **Formation Name** (e.g. `XP268-{YOUR-NUMBER}-Agent-Integration`), set **Formation Type** to **Integration with Agent Gateway Consumer**, and click **Next Step**.
 3. Select the **Agent Gateway** system and click **Next Step**.
 4. Select your `XP268-{YOUR-NUMBER}-AGW-Consumer` system (System Type: Agent Gateway Consumer) and click **Next Step**.
-5. Select the SAP agents and/or assistants you want your system to be able to invoke — this includes your custom Joule agent deployed via Joule Studio. Click **Next Step**.
+5. Select the SAP agents and/or assistants you want your system to be able to invoke. Click **Next Step**.
 
 > **Result:** Formation 3 is created with all three systems included, establishing the allow list of SAP agents your consumer is permitted to invoke.
 
@@ -165,7 +165,7 @@ You run discovery with the same Bruno collection and the same token you obtained
 
 ## Exercise 2.4 - Test the Call Chain with Bruno
 
-With `agent_ord` and `agent_tenant` filled in from discovery, you now call the agent end-to-end. After completing these steps you will have successfully called the custom Joule agent through SAP's Agent Gateway using the Agent Gateway Consumer.
+With `agent_ord` and `agent_tenant` filled in from discovery, you now call the agent end-to-end. After completing these steps you will have successfully called the Joule agent through SAP's Agent Gateway using the Agent Gateway Consumer.
 
 1. Make sure the environment variables from Exercise 2.3 are configured, including `agent_ord` and `agent_tenant` discovered via ARD.
 
@@ -183,6 +183,6 @@ With `agent_ord` and `agent_tenant` filled in from discovery, you now call the a
 
 ## Summary
 
-You've now read through the Agent Gateway Consumer setup in SAP for Me and SAP Cloud Identity Services, discovered the callable agent via ARD, and successfully called the custom Joule agent through SAP's Agent Gateway.
+You've now read through the Agent Gateway Consumer setup in SAP for Me and SAP Cloud Identity Services, discovered the callable agent via ARD, and successfully called the Joule agent through SAP's Agent Gateway.
 
 Continue to - [Exercise 3 - Configure Connection from Gemini Enterprise Agent](../ex3/README.md)

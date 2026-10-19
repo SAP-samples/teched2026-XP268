@@ -5,9 +5,9 @@ In this exercise, you take the role of a **landscape explorer**. Before touching
 ## Overview
 
 After completing these steps you will have:
-- An overview of the SAP-managed landscape and its key components (SAP's Agent Gateway, SAP Cloud Identity Services, and the already-deployed custom Joule agent)
+- An overview of the SAP-managed landscape and its key components (SAP's Agent Gateway, SAP Cloud Identity Services, and the already-deployed Joule agent)
 - An overview of the Google Cloud landscape (Gemini Enterprise, Agent Platform)
-- Understood the end-to-end architecture: how a Gemini agent will eventually call through SAP's Agent Gateway to a custom Joule agent
+- Understood the end-to-end architecture: how a Gemini agent will eventually call through SAP's Agent Gateway to a Joule agent
 
 ## Step 1 - Explore the Architecture
 
