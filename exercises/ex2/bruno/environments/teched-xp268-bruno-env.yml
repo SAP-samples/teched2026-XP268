@@ -18,7 +18,3 @@ variables:
     value: https://...
   - name: joule_agent_a2a_server_url
     value: https://...
-  - name: agent_ord
-    value: <agent-ord-id>
-  - name: agent_tenant
-    value: <agent-tenant-id>

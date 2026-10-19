@@ -113,7 +113,14 @@ Before you can call an agent, you need to know **which** agents are reachable th
 
 You run discovery with the provided Bruno collection, starting from the same OAuth token flow you will reuse to invoke the agent.
 
-1. Open Bruno and import the provided collection from [`exercises/ex2/bruno/`](./bruno/) (if not already imported). Configure the environment variables:
+1. Open Bruno and open the provided collection from [`exercises/ex2/bruno/`](./bruno/) (if not already imported). 
+<br>![](./images//bruno-5.png)
+Select the folder [`exercises/ex2/bruno/`](./bruno/)
+
+Configure the environment variables:
+<br>![](./images//bruno-6.png)
+
+Add or adjust the following entries:
    - `ias_host` — your SAP Cloud Identity Services tenant URL
    - `client_id` and `client_secret` — the credentials handed to you in Exercise 2.2
    - `username` and `password` — your SAP Cloud Identity Services user credentials
