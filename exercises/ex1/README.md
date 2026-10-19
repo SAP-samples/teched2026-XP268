@@ -29,27 +29,8 @@ Before diving into the hands-on steps, familiarize yourself with the reference a
 
 </details>
 
-## Step 2 - Explore the SAP-managed Landscape (BAIP)
-
-In this step you will navigate the SAP-managed landscape and identify the key components.
-
-1. Open the SAP for Me portal and navigate to your assigned system.
-![](./images/sap4me-1.jpg)
-
-2. Locate the following services and note their URLs for later use:
-   - **Joule Work** (including SAP's Agent Gateway, through which the already-deployed custom Joule agent is reachable)
-   - **SAP Cloud Identity Services**
-
-## Step 3 - Explore the Google Cloud Landscape
-
-In this step you will navigate the Google Cloud Console and identify the Gemini Enterprise and Agent Platform components.
-
-1. Open the Google Cloud Console and switch to your assigned project.
-
-2. Locate **Gemini Enterprise** and **Agent Platform** in the navigation. Note which region your project is deployed in.
-
 ## Summary
 
-You now have a clear picture of both landscapes and the key components you will work with.
+You now have a clear picture of the end-to-end architecture and the key components you will work with.
 
 Continue to - [Exercise 2 - Call the Custom Agent via SAP's Agent Gateway](../ex2/README.md)
