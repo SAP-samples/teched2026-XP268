@@ -1,62 +1,212 @@
 # Exercise 3 - Configure Connection from Gemini Enterprise Agent
 
-In this exercise, you will deploy an agent on Google's Agent Platform, configure its connection to SAP's Agent Gateway, connect it to Gemini Enterprise, and then validate the complete cross-cloud A2A call chain end-to-end.
+In this exercise, you will deploy a bridge agent to Google's Agent Runtime that enables Gemini Enterprise to call your Joule agent through SAP's Agent Gateway using a three-legged OAuth flow.
+
+Gemini Enterprise cannot connect directly to an SAP agent through SAP Agent Gateway because it does not support cross-provider A2A authentication with an in-product sign-in prompt. The bridge agent (`gcp-agent-bridge`) sits between Gemini Enterprise and the downstream A2A agent: it exchanges the end-user token forwarded by Gemini Enterprise at SAP Cloud Identity Services for a downstream-scoped token, then relays the call over A2A.
+
+![](./images/gcp-agw-flow.png)
+
+The agent source lives in [`gcp-agent-bridge/`](./gcp-agent-bridge/). It is a transparent forwarding agent built on the Google ADK and deployed with `agents-cli`. See [`gcp-agent-bridge/README.md`](./gcp-agent-bridge/README.md) for the component-level reference.
+
+### How the token exchange works
+
+Understanding the flow makes the SAP Cloud Identity Services configuration below easier to follow:
+
+1. Gemini Enterprise runs the end user's OAuth consent (using the authorization you register in Exercise 3.2) and forwards the resulting user token into the bridge agent's session state.
+2. The agent reads that token and calls the SAP Cloud Identity Services token endpoint (`<OAUTH_TOKEN_HOST>/oauth2/token`) with `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer`, passing the forwarded user token as the `assertion` and the downstream resource as `resource`. This is RFC 7523 **jwt-bearer principal propagation**: SAP Cloud Identity Services re-mints the user token scoped to the downstream, preserving the user's `sub`.
+3. The agent authenticates **itself** to SAP Cloud Identity Services with an RFC 7523 §2.2 client assertion — a short-lived JWT signed by a GCP service account via Google's `signJwt` API. **No client secret ever lives in the runtime.** This is why Exercise 3.1 registers the service account's JWKS URL as a trusted JWT issuer in SAP Cloud Identity Services.
+4. The agent forwards the user's request to the downstream A2A agent (an `message/send` JSON-RPC call) with the exchanged token as a bearer token.
+
+The service account signs only the client assertion (proving *which app* is calling). The user identity is always the forwarded token, used verbatim — the agent can never choose an arbitrary user.
+
+> All commands are given for Windows PowerShell. On a POSIX shell (bash/zsh), drop the trailing backtick (`` ` ``) line continuations or replace them with a backslash (`\`).
 
 ## Exercise 3.1 - Deploy Agent on Google's Agent Platform and Configure Connection to SAP's Agent Gateway
 
-After completing these steps you will have a deployed agent on Google's Agent Platform that is configured to route calls through SAP's Agent Gateway using Google identity for authentication.
+**Create a Google Cloud Service Account**
 
-1. Open the Google Cloud Console and navigate to **Agent Platform** in your assigned project.
-<br>![](/exercises/ex3/images/03_01_0010.png)
+Confirm that you have completed all prerequisites before continuing.
 
-2. Open the agent's tool configuration and add a new HTTP tool. Point it to your AGW endpoint from Exercise 1.2.
-<br>![](/exercises/ex3/images/03_01_0020.png)
+1. Sign in using the Google Cloud CLI.
 
-3. Configure authentication for the HTTP tool to use the agent's Google service account token. This is the token that will be exchanged via IAS as configured in Exercise 2.2 — the AGW will receive an SAP access token that carries the Google origin in its claims.
+   ```
+   gcloud auth login
+   ```
 
-4. Update the agent's instructions so it knows when and how to invoke the SAP backend tool.
+   ```
+   gcloud auth application-default login
+   ```
 
-5. Deploy the agent on Google's Agent Platform.
+2. Enable the IAM Service Account Credentials API. For reference, see the [IAM Credentials API documentation](https://docs.cloud.google.com/iam/docs/reference/credentials/rest).
+
+   ```
+   gcloud services enable iamcredentials.googleapis.com --project <your-project-id>
+   ```
+
+3. Create a Google Cloud service account. You can change the `sap-ias-signer` account ID and display name as needed.
+
+   ```
+   gcloud iam service-accounts create sap-ias-signer --project <your-project-id> `
+     --display-name "SAP Cloud Identity Services client-assertion signer"
+   ```
+
+4. Verify that the service account creation was successful.
+
+   ```
+   gcloud iam service-accounts list --project <your-project-id> `
+     --format="table(displayName, email, disabled)"
+
+   # Expected Output:
+   # DISPLAY NAME                                         EMAIL                                                               DISABLED
+   # SAP Cloud Identity Services client-assertion signer                      sap-ias-signer@<your-project-id>.iam.gserviceaccount.com             False
+   ```
+
+   This command creates only the identity. It does not grant roles or create keys yet — the agent signs with this account via `signJwt`, so no key is ever downloaded. The resulting principal is `sap-ias-signer@<your-project-id>.iam.gserviceaccount.com`. Use it later for the `RUNTIME_SA_EMAIL` variable.
+
+**Configure the SAP Cloud Identity Services Application**
+
+5. Add the following redirect URIs under `Applications & Resources` &rarr; `<your-application>` &rarr; `OpenID Connect Configuration` &rarr; `Redirect` &rarr; `Add`:
+
+   - `https://vertexaisearch.cloud.google.com/oauth-redirect`
+   - `https://vertexaisearch.cloud.google.com/static/oauth/oauth.html`
+
+6. Create credentials under `Applications & Resources` &rarr; `<your-application>` &rarr; `Client Authentication` &rarr; `Secrets` &rarr; `Add`. Add a description, select `Application` and `OpenID`, and click `Save`.
+
+   **Note down the shown credentials!** You need the `client_id` for `OAUTH_CLIENT_ID` (step 9) and both the `client_id` and `client_secret` for the Gemini Enterprise authorization (Exercise 3.2).
+
+7. Register the service account as a trusted JWT issuer under `Applications & Resources` &rarr; `<your-application>` &rarr; `Client Authentication` &rarr; `JSON Web Tokens` &rarr; `Configure Trust by Issuer` &rarr; `Add`. Complete the fields as follows:
+
+   | Variable | Value |
+   |-|-|
+   | `Description` | Enter a description. |
+   | `Issuer Configuration` | Manual Configuration |
+   | `Issuer` | `https://www.googleapis.com/service_accounts/v1/jwk/<RUNTIME_SA_EMAIL>` |
+   | `JSON Web Key Set URI` | `https://www.googleapis.com/service_accounts/v1/jwk/<RUNTIME_SA_EMAIL>` |
+   | `Refresh Interval` | 24 hours |
+   | `Corporate Identity Provider - Name` | **Leave blank!** |
+   | `Subject` | The `client_id` from the credentials created in step 6. |
+   | `Audience` | The SAP Cloud Identity Services tenant base URL, e.g. `https://<tenant>.accounts400.ondemand.com` |
+   | `API Permission Groups` | **Leave blank!** |
+
+   `Issuer` must equal the `JSON Web Key Set URI`: the agent derives the client assertion's `iss` from the service account's per-account JWKS URL, and SAP Cloud Identity Services matches `iss` literally. Replace `<RUNTIME_SA_EMAIL>` with the full service account email from step 3 (`sap-ias-signer@<your-project-id>.iam.gserviceaccount.com`). Save the configuration.
+
+**Configure and Deploy the Agent**
+
+8. Change into the agent directory and copy the `.env` template:
+
+   ```PowerShell
+   cd ./exercises/ex3/gcp-agent-bridge
+   cp env.example .env
+   ```
+
+9. Set the following variables in `.env`:
+
+   | Variable | Required | Value |
+   |---|---|---|
+   | `MODEL` | No | Gemini model the agent runs on. Defaults to `gemini-2.5-flash`. |
+   | `AGENT_NAME` | No | Defaults to `proxy_agent`. If you change it, also update `root_agent_name:` in `agents-cli-manifest.yaml` so telemetry stays consistent. |
+   | `DOWNSTREAM_AGENT_URL` | Yes | The downstream A2A JSON-RPC endpoint — your Agent Gateway A2A URL for the Joule agent. |
+   | `OAUTH_CLIENT_ID` | Yes | The `client_id` of the **SAP Cloud Identity Services application** from step 6. |
+   | `OAUTH_TOKEN_HOST` | Yes | The SAP Cloud Identity Services tenant base URL, for example `https://<tenant>.accounts400.ondemand.com`. |
+   | `TOKEN_EXCHANGE_RESOURCE` | Yes | The resource/audience that identifies the downstream service to IAS, for example `urn:sap:identity:application:provider:name:agent-gateway`. |
+   | `RUNTIME_SA_EMAIL` | Yes | The email of the service account created in step 3, `sap-ias-signer@<your-project-id>.iam.gserviceaccount.com`. |
+   | `GE_AUTH_ID` | No | Set only when more than one Gemini Enterprise authorization is registered on the agent; it selects which forwarded token to read. Leave blank for this exercise. |
+
+10. Install the tooling, scaffold the deployment infrastructure (one time per project), and deploy:
+
+    ```
+    pip install uv
+    uv tool install google-agents-cli
+
+    uv sync                          # resolves dependencies and generates uv.lock (the Docker build needs it)
+    agents-cli infra single-project  # one-time: scaffold Terraform for your GCP project
+    agents-cli deploy                # pass .env to the runtime; do NOT set a client secret
+    ```
+
+    Do **not** configure a client secret on the deployed runtime — the agent authenticates to SAP Cloud Identity Services only with the service-account-signed client assertion.
 
 ## Exercise 3.2 - Connect Agent to Gemini Enterprise
 
-After completing these steps you will have made your deployed agent available in Gemini Enterprise so that users can interact with it.
+The deployed agent runs under a Google-managed Agent Runtime identity. That identity needs permission to sign JWTs with your `sap-ias-signer` service account.
 
-1. In the Google Cloud Console, navigate to **Gemini Enterprise** settings.
-<br>![](/exercises/ex3/images/03_02_0010.png)
+1. Open the deployed agent in the Agent Registry and copy the identity service account email. It looks like:
 
-2. Register your deployed Agent Platform agent as an available agent in Gemini Enterprise.
+   `<service-account>@gcp-sa-aiplatform-re.iam.gserviceaccount.com`
 
-3. Verify the agent appears and is selectable in the Gemini Enterprise chat interface.
+2. Grant that identity permission to create credentials on the signer service account.
 
-## Exercise 3.3 - Test End-to-End: Gemini Agent to AGW to Custom Agent
-
-After completing these steps you will have validated the full cross-cloud A2A call chain: a Gemini Enterprise agent calling through SAP's Agent Gateway to your custom Joule agent using token exchange.
-
-1. Open the Gemini Enterprise chat interface and select your agent.
-<br>![](/exercises/ex3/images/03_03_0010.png)
-
-2. Send a prompt that requires the agent to invoke the SAP backend (e.g., ask it something only your custom Joule agent can answer).
-
-3. Observe the agent's reasoning and verify it calls the AGW tool. Confirm you receive a valid response from your custom Joule agent.
-
-4. In the AGW console, inspect the incoming call:
-   - Verify the token was correctly exchanged from a Google-issued token to an SAP IAS token
-   - Confirm the Google identity (service account) is correctly reflected in the token claims
-
-5. Trace the full flow across both landscapes:
    ```
-   Gemini Enterprise (Google Cloud)
-        → HTTP tool call with Google service account token
-        → IAS Token Exchange → SAP access token
-        → SAP Agent Gateway (validates token, routes call)
-        → Custom Joule Agent (processes request, returns response)
-        → Response flows back to Gemini agent
-        → Gemini agent presents answer to user
+   gcloud iam service-accounts add-iam-policy-binding `
+     sap-ias-signer@<your-project-id>.iam.gserviceaccount.com `
+     --member "serviceAccount:<service-account>@gcp-sa-aiplatform-re.iam.gserviceaccount.com" `
+     --role roles/iam.serviceAccountTokenCreator `
+     --project <your-project-id>
    ```
+
+3. Verify the policy binding.
+
+   ```
+   gcloud iam service-accounts get-iam-policy `
+     sap-ias-signer@<your-project-id>.iam.gserviceaccount.com `
+     --project <your-project-id> `
+     --format="table(bindings.role, bindings.members)"
+
+   # Expected Output
+   # ROLE                                      MEMBERS
+   # roles/iam.serviceAccountTokenCreator      serviceAccount:<service-account>@gcp-sa-aiplatform-re.iam.gserviceaccount.com
+   ```
+
+   *Optional: Add yourself as a member for local testing (lets you smoke-test assertion signing with your own ADC identity).*
+
+   ```
+   gcloud iam service-accounts add-iam-policy-binding `
+     sap-ias-signer@<your-project-id>.iam.gserviceaccount.com `
+     --member "user:<your-email>" `
+     --role roles/iam.serviceAccountTokenCreator `
+     --project <your-project-id>
+   ```
+
+4. Open the Agent Registry in Google Cloud Console, find the deployed `gcp-agent-bridge` agent, and note the reasoning-engine URI under **Protocols** in the following format:
+
+   `projects/<project-number>/locations/<region>/reasoningEngines/<engine-number>`
+
+   The agent also serves an A2A card at `<app-url>/a2a/app/.well-known/agent-card.json` if you need to inspect it.
+
+5. Open Gemini Enterprise in Google Cloud Console, create an app, and add the deployed agent. Select `Agents` &rarr; `Add agent` &rarr; `Custom agent via Agent Runtime` &rarr; `Add`.
+
+6. Select `Add authorization` and enter the following values:
+
+   | Variable | Value |
+   |-|-|
+   | `Authorization name` | Enter a name of your choice. |
+   | `Client ID` | The `client_id` of the **SAP Cloud Identity Services application** from Exercise 3.1, step 6. |
+   | `Client secret` | The `client_secret` of the **SAP Cloud Identity Services application** from Exercise 3.1, step 6. |
+   | `Token URI` | `https://<tenant>.accounts400.ondemand.com/oauth2/token` |
+   | `Authorization URI` | `https://<tenant>.accounts400.ondemand.com/oauth2/authorize?response_type=code&scope=openid` |
+   | `PKCE verification enabled` | unchecked |
+   | `Use HTTP Basic authentication` | unchecked |
+
+7. Select `Next` and enter the following values:
+
+   | Variable | Value |
+   |-|-|
+   | `Agent name` | Enter a name of your choice. |
+   | `Agent description` | Enter a description, for example: "Bridge agent that forwards requests to an SAP agent through SAP Agent Gateway." |
+   | `Agent Runtime reasoning engine` | Paste the URI noted in step 4, for example `projects/<project-number>/locations/<region>/reasoningEngines/<engine-number>`. |
+
+   Select `Create`.
+
+## Exercise 3.3 - Test End-to-End: Gemini Agent to AGW to Joule Agent
+
+1. Open Gemini Enterprise and select the app you created in Exercise 3.2.
+
+2. Send a message to the agent and verify that:
+   - Gemini Enterprise prompts you to sign in with your SAP Cloud Identity Services credentials.
+   - After authentication, the agent forwards your message through SAP's Agent Gateway to your Joule agent.
+   - Your Joule agent's response is returned and displayed in Gemini Enterprise.
+
+   If the agent replies that no credential was forwarded, confirm the authorization from Exercise 3.2 is attached and that consent completed. If the token exchange fails, re-check the SAP Cloud Identity Services JWT trust entry (step 7) and the IAM policy binding (Exercise 3.2, step 2).
 
 ## Summary
 
-You've now deployed an agent on Google's Agent Platform, connected it to Gemini Enterprise, and validated the fully governed cross-cloud A2A call chain.
-
-This completes the XP268 session. You've built and tested a secure agent-to-agent architecture spanning Google Cloud and SAP's managed landscape, governed end-to-end by SAP's Agent Gateway and Cloud Identity Service.
+You've now deployed the `gcp-agent-bridge` agent on Google's Agent Platform, configured the three-legged OAuth flow between Gemini Enterprise and SAP Cloud Identity Services, and validated the end-to-end call chain from Gemini Enterprise through SAP's Agent Gateway to your Joule agent.
