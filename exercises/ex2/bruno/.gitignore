@@ -1,5 +1,6 @@
 # Secrets
 .env*
+teched-xp268-bruno-env-validation.yml
 
 # Dependencies
 node_modules

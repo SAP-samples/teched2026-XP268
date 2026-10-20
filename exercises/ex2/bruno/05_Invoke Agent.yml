@@ -1,11 +1,11 @@
 info:
   name: Invoke Agent
   type: http
-  seq: 2
+  seq: 5
 
 http:
   method: post
-  url: "{{agent_gateway_host}}/v1/a2a/{{agent_ord}}/{{agent_tenant}}/jsonrpc"
+  url: "{{joule_agent_a2a_server_url}}"
   headers:
     - name: authorization
       value: Bearer {{agent_gateway_token}}
