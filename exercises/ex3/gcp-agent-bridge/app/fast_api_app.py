@@ -71,8 +71,8 @@ app: FastAPI = get_fast_api_app(
     otel_to_cloud=otel_to_cloud,
     lifespan=lifespan,
 )
-app.title = "gcp-agent-generic"
-app.description = "API for interacting with the Agent gcp-agent-generic"
+app.title = "gcp-agent-bridge"
+app.description = "API for interacting with the Agent gcp-agent-bridge"
 
 # Proxy routes so the Vertex AI Console Playground (reasoning_engine SDK) can
 # talk to this agent alongside the native adk_api routes.

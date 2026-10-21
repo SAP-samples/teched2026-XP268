@@ -659,7 +659,7 @@ wheels = [
 ]
 
 [[package]]
-name = "gcp-agent-generic"
+name = "gcp-agent-bridge"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

@@ -1,4 +1,4 @@
-name: gcp-agent-generic
+name: gcp-agent-bridge
 acli_version: 1.7.0
 agent_directory: app
 region: us-central1

@@ -1,4 +1,4 @@
-# gcp-agent-generic
+# gcp-agent-bridge
 
 A minimal, reusable **Gemini Enterprise → A2A proxy agent** for Google Cloud.
 
@@ -193,7 +193,7 @@ attach the authorization that produces the forwarded user token.
 ## File layout
 
 ```
-gcp-agent-generic/
+gcp-agent-bridge/
 ├── app/
 │   ├── __init__.py
 │   ├── agent.py                 # proxy agent + token exchange (configure here)

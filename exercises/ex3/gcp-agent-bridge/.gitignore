@@ -211,3 +211,7 @@ tools/a2a-inspector/
 *.pem
 *-key.json
 credentials*.json
+
+
+deployment_metadata.json
+deployment_metadata.json.lock

@@ -1,5 +1,5 @@
 [project]
-name = "gcp-agent-generic"
+name = "gcp-agent-bridge"
 version = "0.1.0"
 description = "Generic Gemini-Enterprise-fronted A2A proxy agent with RFC 7523 jwt-bearer token exchange."
 authors = [
