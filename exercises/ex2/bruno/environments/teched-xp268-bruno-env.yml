@@ -15,6 +15,6 @@ variables:
   - name: agent_gateway_host
     value: https://<region>.access.sapdas.cloud.sap
   - name: joule_agent_agent_card_url
-    value: https://...
+    value: https://.../.well-known/agent-card.json
   - name: joule_agent_a2a_server_url
-    value: https://...
+    value: https://.../jsonrpc
