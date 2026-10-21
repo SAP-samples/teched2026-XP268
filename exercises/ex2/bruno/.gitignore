@@ -1,6 +1,7 @@
 # Secrets
 .env*
 teched-xp268-bruno-env-validation.yml
+ard-sample.json
 
 # Dependencies
 node_modules
