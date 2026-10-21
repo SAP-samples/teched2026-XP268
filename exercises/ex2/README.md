@@ -47,8 +47,8 @@ Three formations must be assigned in order. Each formation produces a configurat
 ![](./images//sap4me-7.jpg)
 
 1. Navigate to the **Formations** tab.
-2. Find the formation of type **Integration with SAP Cloud Identity Services** (e.g. `sap-sci<your-formation-id>`). Click **Include Systems**.
-3. Select your `XP268-AGW-Consumer` system and click **Next Step**.
+2. Find the formation of type **Integration with SAP Cloud Identity Services**. Click **Include Systems**.
+3. Select your `Gemini Enterprise Agent Gateway Consumer` system and click **Next Step**.
 4. Review the selected system and click **Include**.
 
 > **Result:** A single-tenant OIDC application representing your system is created in SAP Cloud Identity Services, establishing the agent's identity.
@@ -60,26 +60,22 @@ Three formations must be assigned in order. Each formation produces a configurat
 **Formation 2: Integration with Agent Gateway for Third Party**
 
 1. Click **Create Formation**.
-2. Enter a **Formation Name** (e.g. `XP268-Agent-Gateway-Integration`), set **Formation Type** to **Integration with Agent Gateway for Third Party**, and click **Next Step**.
-3. Select the **Agent Gateway** system and click **Next Step**.
-4. Select your `XP268-AGW-Consumer` system (System Type: Agent Gateway Consumer) and click **Next Step**.
-5. Select the **SAP Cloud Identity** system.
-6. Click **Next Step**, review and **Create**.
+2. Enter a **Formation Name** (e.g. `Agent Gateway for Third Party`), set **Formation Type** to **Integration with Agent Gateway for Third Party**, and click **Next Step**.
+3. Select the **Agent Gateway** system, **SAP Cloud Identity** system and your `Gemini Enterprise Agent Gateway Consumer` system (System Type: Agent Gateway Consumer) and click **Next Step**.
+4. Review and **Create**.
 
 > **Result:** The dependency between the agent's identity and the agent gateway is established, enabling your system to call SAP agents through the agent gateway.
 
 ![](./images//sap4me-5.jpg)
 ![](./images//sap4me-6.jpg)
-![](./images//sap4me-7.jpg)
 
 **Formation 3: Integration with Agent Gateway Consumer**
 
 1. Click **Create Formation**.
-2. Enter a **Formation Name** (e.g. `XP268-Agent-Integration`), set **Formation Type** to **Integration with Agent Gateway Consumer**, and click **Next Step**.
-3. Select the **Agent Gateway** system.
-4. Select your `XP268-AGW-Consumer` system (System Type: Agent Gateway Consumer).
-5. Select the SAP agents and/or assistants you want your system to be able to invoke.
-6. Click **Next Step**, review and **Create**.
+2. Enter a **Formation Name** (e.g. `Gemini Enterprise Agent Gateway Consumer`), set **Formation Type** to **Integration with Agent Gateway Consumer**, and click **Next Step**.
+3. Select the **Agent Gateway** system and your `Gemini Enterprise Agent Gateway Consumer` system (System Type: Agent Gateway Consumer).
+4. Select the SAP agents and/or assistants you want your system to be able to invoke.
+5. Click **Next Step**, review and **Create**.
 
 > **Result:** Formation 3 is created with the systems included, establishing the allow list of SAP agents your Agent Gateway Consumer is permitted to invoke.
 
