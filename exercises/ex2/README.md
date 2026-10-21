@@ -47,13 +47,8 @@ Three formations must be assigned in order. Each formation produces a configurat
 ![](./images//sap4me-7.jpg)
 
 1. Navigate to the **Formations** tab.
-<<<<<<< HEAD
-2. Find the formation of type **Integration with SAP Cloud Identity Services** (e.g. `sap-sci<your-formation-id>`). Click **Include Systems**.
-3. Select your `XP268-AGW-Consumer` system and click **Next Step**.
-=======
 2. Find the formation of type **Integration with SAP Cloud Identity Services**. Click **Include Systems**.
 3. Select your `Gemini Enterprise Agent Gateway Consumer` system and click **Next Step**.
->>>>>>> discovery
 4. Review the selected system and click **Include**.
 
 > **Result:** A single-tenant OIDC application representing your system is created in SAP Cloud Identity Services, establishing the agent's identity.
@@ -65,17 +60,9 @@ Three formations must be assigned in order. Each formation produces a configurat
 **Formation 2: Integration with Agent Gateway for Third Party**
 
 1. Click **Create Formation**.
-<<<<<<< HEAD
-2. Enter a **Formation Name** (e.g. `XP268-Agent-Gateway-Integration`), set **Formation Type** to **Integration with Agent Gateway for Third Party**, and click **Next Step**.
-3. Select the **Agent Gateway** system and click **Next Step**.
-4. Select your `XP268-AGW-Consumer` system (System Type: Agent Gateway Consumer) and click **Next Step**.
-5. Select the **SAP Cloud Identity** system.
-6. Click **Next Step**, review and **Create**.
-=======
 2. Enter a **Formation Name** (e.g. `Agent Gateway for Third Party`), set **Formation Type** to **Integration with Agent Gateway for Third Party**, and click **Next Step**.
 3. Select the **Agent Gateway** system, **SAP Cloud Identity** system and your `Gemini Enterprise Agent Gateway Consumer` system (System Type: Agent Gateway Consumer) and click **Next Step**.
 4. Review and **Create**.
->>>>>>> discovery
 
 > **Result:** The dependency between the agent's identity and the agent gateway is established, enabling your system to call SAP agents through the agent gateway.
 
@@ -85,18 +72,10 @@ Three formations must be assigned in order. Each formation produces a configurat
 **Formation 3: Integration with Agent Gateway Consumer**
 
 1. Click **Create Formation**.
-<<<<<<< HEAD
-2. Enter a **Formation Name** (e.g. `XP268-Agent-Integration`), set **Formation Type** to **Integration with Agent Gateway Consumer**, and click **Next Step**.
-3. Select the **Agent Gateway** system.
-4. Select your `XP268-AGW-Consumer` system (System Type: Agent Gateway Consumer).
-5. Select the SAP agents and/or assistants you want your system to be able to invoke.
-6. Click **Next Step**, review and **Create**.
-=======
 2. Enter a **Formation Name** (e.g. `Gemini Enterprise Agent Gateway Consumer`), set **Formation Type** to **Integration with Agent Gateway Consumer**, and click **Next Step**.
 3. Select the **Agent Gateway** system and your `Gemini Enterprise Agent Gateway Consumer` system (System Type: Agent Gateway Consumer).
 4. Select the SAP agents and/or assistants you want your system to be able to invoke.
 5. Click **Next Step**, review and **Create**.
->>>>>>> discovery
 
 > **Result:** Formation 3 is created with the systems included, establishing the allow list of SAP agents your Agent Gateway Consumer is permitted to invoke.
 
@@ -184,7 +163,7 @@ Add or adjust the following entries:
      ]
    }
    ```
-    [Agentic Resource Discovery Specification (ARD)](https://agenticresourcediscovery.org/) is an open discovery protocol for agentic resources ([GitHub](https://github.com/ards-project/ard-spec)). It allows an AI client to ask: "What is available for this task?" and lets a discovery service answer with matching resources.
+    [Agentic Resource Discovery Specification (ARD)](https://agenticresourcediscovery.org/) is an open discovery protocol for agentic resources ([GitHub: ards-project/ard-spec](https://github.com/ards-project/ard-spec)). It allows an AI client to ask: "What is available for this task?" and lets a discovery service answer with matching resources. For how SAP's Agent Gateway exposes these endpoints, see [Discovering SAP Agents Using Agentic Resource Discovery Endpoints](https://help.sap.com/docs/CROSS_DOMAIN_AGENTS/4d8be6737cf24797bf753cbcc6e2288f/418a00aac347473e866cb7987119b9f9.html).
 
 6. Find the entry whose `metadata.callable` is `true` — that is the agent you are allowed to invoke. Note that some entries are **not** callable: `SAP Joule Agent 1` itself has `"callable": false`, while the **SAP Joule Agent 2** is callable (reflect what Systems we have put into the Formation 3 with our Agent Gateway Consumer System).
 

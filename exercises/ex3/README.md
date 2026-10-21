@@ -2,7 +2,7 @@
 
 In this exercise, you will deploy a bridge agent to Google's Agent Runtime that enables Gemini Enterprise to call your Joule agent through SAP's Agent Gateway using a three-legged OAuth flow.
 
-Gemini Enterprise handles the end-user sign-in but cannot perform the second-hop token exchange needed to reach SAP Agent Gateway. The bridge agent (`gcp-agent-bridge`) sits between Gemini Enterprise and the downstream A2A agent: it exchanges the end-user token forwarded by Gemini Enterprise at SAP Cloud Identity Services — using a client secret — for a downstream-scoped token, then relays the call over A2A.
+Gemini Enterprise does support cross-provider three-legged authentication (3LO) with an in-chat sign-in prompt against SAP Cloud Identity Services (IAS). What neither Gemini Enterprise nor SAP offers out of the box is a token exchange that re-scopes the resulting end-user token to the SAP Agent Gateway. That second hop is why the bridge agent is needed. The bridge agent (`gcp-agent-bridge`) sits between Gemini Enterprise and the downstream A2A agent: it exchanges the end-user token forwarded by Gemini Enterprise at SAP Cloud Identity Services — using a client secret — for a downstream-scoped token, then relays the call over A2A.
 
 ![](./images/gcp-agw-flow.png)
 
@@ -65,14 +65,18 @@ Confirm that you have completed all prerequisites before continuing.
 
 **Configure the SAP Cloud Identity Services Application**
 
+> **Read-through only.** The steps below were already performed in advance for your workshop tenant — you are not expected (and will not have the access) to do them live. Read them to understand how the external agent's identity was established. The full procedure is documented in the official SAP Help tutorial: [Configuring JWKS-Based Access for Third-Party Agents](https://help.sap.com/docs/CROSS_DOMAIN_AGENTS/4d8be6737cf24797bf753cbcc6e2288f/e3f98e7ff8304fb5a79fd187a04fec18.html).
+
 5. ✅ The redirect URIs for Gemini Enterprise have already been added to your SAP Cloud Identity Services application for you:
 
    - `https://vertexaisearch.cloud.google.com/oauth-redirect`
    - `https://vertexaisearch.cloud.google.com/static/oauth/oauth.html`
 
+   ![](./images/sci-redirects.png)
+
 6. ✅ The SAP Cloud Identity Services application already has credentials. Use the same `client_id` and `client_secret` you used in the Bruno collection earlier. You will need them again in step 9 (`OAUTH_CLIENT_ID`) and for the Gemini Enterprise authorization in Exercise 3.2.
 
-7. Register the service account as a trusted JWT issuer under `Applications & Resources` &rarr; `<your-application>` &rarr; `Client Authentication` &rarr; `JSON Web Tokens` &rarr; `Configure Trust by Issuer` &rarr; `Add`. Complete the fields as follows:
+7. ✅ Register the service account as a trusted JWT issuer under `Applications & Resources` &rarr; `<your-application>` &rarr; `Client Authentication` &rarr; `JSON Web Tokens` &rarr; `Configure Trust by Issuer` &rarr; `Add`. Complete the fields as follows:
 
    | Variable | Value |
    |-|-|
