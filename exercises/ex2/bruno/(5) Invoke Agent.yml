@@ -24,7 +24,7 @@ http:
             "parts": [
               {
                 "kind": "text",
-                "text": "Tell me on :-)"
+                "text": "< Check out the examples in the agent card's skills section! :) >"
               }
             ],
             "messageId": "{{$randomUUID}}",
