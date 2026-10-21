@@ -14,8 +14,8 @@ The end-to-end flow is captured in the reference architecture on the [SAP Archit
 
 ## Requirements
 
-### Business AI Platform
-- SAP for Me
+### SAP Business AI Platform
+- [SAP for Me](https://me.sap.com/)
 - Joule Work
     - SAP's Agent Gateway
 - SAP Cloud Identity Services

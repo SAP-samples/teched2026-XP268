@@ -123,10 +123,10 @@ Add or adjust the following entries:
    - `username` and `password` — your SAP Cloud Identity Services user credentials
    - `agent_gateway_host` — your Agent Gateway endpoint
 
-2. Run **(1) Fetch User Token**-Call. *Fetch User Token* sends a `password` grant to `{{ias_host}}/oauth2/token` and returns a JWT access token.
+2. Run **(1) Fetch User Token**-Call. *(1) Fetch User Token* sends a `password` grant to `{{ias_host}}/oauth2/token` and returns a JWT access token.
 <br>![](./images//bruno-9.png)
 
-3. Then run **(2) Exchange User Token**. ; *Exchange User Token* performs a JWT bearer grant (`urn:ietf:params:oauth:grant-type:jwt-bearer`) scoped to the Agent Gateway resource. The exchanged token is stored as `agent_gateway_token` and reused by the upcoming requests.
+3. Then run **(2) Exchange User Token**. ; *(2) Exchange User Token* performs a JWT bearer grant (`urn:ietf:params:oauth:grant-type:jwt-bearer`) scoped to the Agent Gateway resource. The exchanged token is stored as `agent_gateway_token` and reused by the upcoming requests.
 <br>![](./images//bruno-10.png)
 
 4. Run the **(3) Fetch ARD Document** request. It sends a GET to `{{agent_gateway_host}}/v1/.well-known/ard.json` with the exchanged token as a Bearer Token and returns the discovery document.
@@ -165,7 +165,13 @@ Add or adjust the following entries:
    ```
     [Agentic Resource Discovery Specification (ARD)](https://agenticresourcediscovery.org/) is an open discovery protocol for agentic resources ([GitHub: ards-project/ard-spec](https://github.com/ards-project/ard-spec)). It allows an AI client to ask: "What is available for this task?" and lets a discovery service answer with matching resources. For how SAP's Agent Gateway exposes these endpoints, see [Discovering SAP Agents Using Agentic Resource Discovery Endpoints](https://help.sap.com/docs/CROSS_DOMAIN_AGENTS/4d8be6737cf24797bf753cbcc6e2288f/418a00aac347473e866cb7987119b9f9.html).
 
-6. Find the entry whose `metadata.callable` is `true` — that is the agent you are allowed to invoke. Note that some entries are **not** callable: `SAP Joule Agent 1` itself has `"callable": false`, while the **SAP Joule Agent 2** is callable (reflect what Systems we have put into the Formation 3 with our Agent Gateway Consumer System).
+6. Find the entry whose `metadata.callable` is `true` — that is the agent you are allowed to invoke. Note that some entries are **not** callable: `SAP Joule Agent 1` itself has `"callable": false`, while the **SAP Joule Agent 2** is callable (reflect what Systems we have put into the Formation 3 with our Agent Gateway Consumer System). As an example, inspect the [Billing Assistant](https://discovery-center.cloud.sap/ai-assistant/c2af7b30-3f8b-4651-b63b-3f193d0dc05d/) where the [Billing Orchestration Agent](https://help.sap.com/docs/AUTONOMOUS_FINANCE_DOMAIN/c4c363ea6a7148dd896991679f786cf6/4eab1b8efe5e4b78b59be7106a0e1460.html) serves as a unified conversational interface to other billing agents via Joule. Based on the nature of your request, the agent delegates billing-related tasks to the responsible agent, like the Billing Creation Agent, the Billing Anomaly Agent, the Billing Adjustment Agent, teh Billing Posting Agent or the Error Explanation and Resolution Agent. All the agents can be discovered in the ARD Document -  the response of the *(3) Fetch ARD Document* request.
+
+To filter on the entry of the Billing Assistant in the response, use the **"Filter with JSONPath"** option in Bruno.
+<br>![](./images//bruno-12.png)
+
+Use `$.entries[?(@.displayName == 'Billing Orchestration Agent')]` to show the entry in teh ARD document for the Billing Assistant.
+    <br>![](./images//bruno-13.png)
 
 7. From the callable entry, read its agent-card `url` and set the Bruno environment variable **manually**:
    - `joule_agent_agent_card_url` ← the entry's `url` verbatim (the `.../v1/a2a/<ord>/<tenant>/.well-known/agent-card.json` endpoint)
@@ -182,13 +188,16 @@ Add or adjust the following entries:
    |---|---|
    | `joule_agent_agent_card_url` | `https://eu10.access.sapdas.cloud.sap/v1/a2a/sap.joule:agent2:v1/cb4c48c3-c204-3786-a094-a6fefb2ebfff/.well-known/agent-card.json` |
 
+      <br>![](./images//bruno-14.png)
+
 8. The ARD document gave you the high-level catalogue. Now fetch the **agent card** to get the specific details of that agent. Run the **(4) Fetch Agent Card** request — it sends a GET to `{{joule_agent_agent_card_url}}` with the exchanged token as a Bearer Token and returns the agent's capability descriptor.
-<br>![](./images//bruno-3.png)
+<br>![](./images//bruno-15.png)
 
 9. In the agent-card response, locate the agent's A2A endpoint — the top-level `url` field of the agent card — and set it on the Bruno environment:
    - `joule_agent_a2a_server_url` ← the agent card's `url` field (the JSON-RPC endpoint, e.g. `<agent_gateway_host>/v1/a2a/<ordId>/<tenant>/jsonrpc`)
 
    This is the endpoint you invoke in Exercise 2.4.
+<br>![](./images//bruno-16.png)
 
 ## Exercise 2.4 - Invoke the SAP Agent with Bruno
 
@@ -196,10 +205,10 @@ With `joule_agent_a2a_server_url` read from the agent card in discovery, you now
 
 1. Make sure the environment variables from Exercise 2.3 are configured, including `joule_agent_a2a_server_url` read from the agent card.
 
-2. If your `agent_gateway_token` has expired, re-run **Fetch User Token** and **Exchange User Token** to refresh it.
+2. If your `agent_gateway_token` has expired, re-run **(1) Fetch User Token** and **(2) Exchange User Token** to refresh it.
 
-3. Run the **Invoke Agent** request. It sends an A2A (Agent-to-Agent Protocol) call as a JSON-RPC 2.0 `message/send` to `{{joule_agent_a2a_server_url}}` with a user message — feel free to change the `text` field to something of your own. Inspect the response and verify the agent replied correctly.
-<br>![](./images//bruno-4.png)
+3. Run the **(5) Invoke Agent** request. It sends an A2A (Agent-to-Agent Protocol) call as a JSON-RPC 2.0 `message/send` to `{{joule_agent_a2a_server_url}}` with a user message — feel free to change the `text` field to something of your own. Inspect the response and verify the agent replied correctly.
+<br>![](./images//bruno-17.png)
 
 ## Summary
 
