@@ -166,6 +166,7 @@ Add or adjust the following entries:
      ]
    }
    ```
+[Agentic Resource Discovery Specification (ARD)](https://agenticresourcediscovery.org/) is an open discovery protocol for agentic resources ([GitHub](https://github.com/ards-project/ard-spec)). It allows an AI client to ask: "What is available for this task?" and lets a discovery service answer with matching resources.
 
 6. Find the entry whose `metadata.callable` is `true` — that is the agent you are allowed to invoke. Note that some entries are **not** callable: `SAP Joule Agent 1` itself has `"callable": false`, while the **SAP Joule Agent 2** is callable (reflect what Systems we have put into the Formation 3 with our Agent Gateway Consumer System).
 
