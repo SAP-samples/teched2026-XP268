@@ -171,7 +171,7 @@ To filter on the entry of the Billing Assistant in the response, use the **"Filt
 <br>![](./images//bruno-12.png)
 
 Use `$.entries[?(@.displayName == 'Billing Orchestration Agent')]` to show the entry in teh ARD document for the Billing Assistant.
-<br>![](./images//bruno-13.png)
+    <br>![](./images//bruno-13.png)
 
 7. From the callable entry, read its agent-card `url` and set the Bruno environment variable **manually**:
    - `joule_agent_agent_card_url` ← the entry's `url` verbatim (the `.../v1/a2a/<ord>/<tenant>/.well-known/agent-card.json` endpoint)
@@ -188,13 +188,16 @@ Use `$.entries[?(@.displayName == 'Billing Orchestration Agent')]` to show the e
    |---|---|
    | `joule_agent_agent_card_url` | `https://eu10.access.sapdas.cloud.sap/v1/a2a/sap.joule:agent2:v1/cb4c48c3-c204-3786-a094-a6fefb2ebfff/.well-known/agent-card.json` |
 
+      <br>![](./images//bruno-14.png)
+
 8. The ARD document gave you the high-level catalogue. Now fetch the **agent card** to get the specific details of that agent. Run the **(4) Fetch Agent Card** request — it sends a GET to `{{joule_agent_agent_card_url}}` with the exchanged token as a Bearer Token and returns the agent's capability descriptor.
-<br>![](./images//bruno-3.png)
+<br>![](./images//bruno-15.png)
 
 9. In the agent-card response, locate the agent's A2A endpoint — the top-level `url` field of the agent card — and set it on the Bruno environment:
    - `joule_agent_a2a_server_url` ← the agent card's `url` field (the JSON-RPC endpoint, e.g. `<agent_gateway_host>/v1/a2a/<ordId>/<tenant>/jsonrpc`)
 
    This is the endpoint you invoke in Exercise 2.4.
+<br>![](./images//bruno-16.png)
 
 ## Exercise 2.4 - Invoke the SAP Agent with Bruno
 
@@ -202,10 +205,10 @@ With `joule_agent_a2a_server_url` read from the agent card in discovery, you now
 
 1. Make sure the environment variables from Exercise 2.3 are configured, including `joule_agent_a2a_server_url` read from the agent card.
 
-2. If your `agent_gateway_token` has expired, re-run **Fetch User Token** and **Exchange User Token** to refresh it.
+2. If your `agent_gateway_token` has expired, re-run **(1) Fetch User Token** and **(2) Exchange User Token** to refresh it.
 
-3. Run the **Invoke Agent** request. It sends an A2A (Agent-to-Agent Protocol) call as a JSON-RPC 2.0 `message/send` to `{{joule_agent_a2a_server_url}}` with a user message — feel free to change the `text` field to something of your own. Inspect the response and verify the agent replied correctly.
-<br>![](./images//bruno-4.png)
+3. Run the **(5) Invoke Agent** request. It sends an A2A (Agent-to-Agent Protocol) call as a JSON-RPC 2.0 `message/send` to `{{joule_agent_a2a_server_url}}` with a user message — feel free to change the `text` field to something of your own. Inspect the response and verify the agent replied correctly.
+<br>![](./images//bruno-17.png)
 
 ## Summary
 

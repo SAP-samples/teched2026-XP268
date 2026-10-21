@@ -1,20 +1,20 @@
 name: teched-xp268-bruno-env
 variables:
   - name: ias_host
-    value: https://<sci-tenant>.accounts.ondemand.com
+    value: https://teched02.accounts.cloud.sap
   - name: client_id
-    value: ""
+    value: f37ac2a7-431d-46e5-9b6e-c75f4710d2bf
   - secret: true
     name: client_secret
   - name: username
-    value: ""
+    value: xp268-XXX
   - secret: true
     name: password
   - name: agent_gateway_resource
     value: urn:sap:identity:application:provider:name:agent-gateway
   - name: agent_gateway_host
-    value: https://<region>.access.sapdas.cloud.sap
+    value: https://eu10.access.sapdas.cloud.sap
   - name: joule_agent_agent_card_url
-    value: https://.../.well-known/agent-card.json
+    value: https://eu10.access.sapdas.cloud.sap/v1/a2a/sap.agtblgasstn:agent:billing-assistant-agent:v1/fee0c264-cf2a-4035-86af-ae75e0f7f2fc/.well-known/agent-card.json
   - name: joule_agent_a2a_server_url
-    value: https://.../jsonrpc
+    value: https://eu10.access.sapdas.cloud.sap/v1/a2a/sap.agtblgasstn:agent:billing-assistant-agent:v1/fee0c264-cf2a-4035-86af-ae75e0f7f2fc/jsonrpc
