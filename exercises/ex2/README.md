@@ -117,22 +117,25 @@ You run discovery with the provided Bruno collection, starting from the same OAu
 <br>![](./images//bruno-5.png)
 Select the folder [`exercises/ex2/bruno/`](./bruno/)
 
-Configure the environment variables:
-<br>![](./images//bruno-6.png)
+    Configure the environment variables:
+    <br>![](./images//bruno-6.png)
+    <br>![](./images//bruno-7.png)
 
 Add or adjust the following entries:
    - `ias_host` — your SAP Cloud Identity Services tenant URL
-   - `client_id` and `client_secret` — the credentials handed to you in Exercise 2.2
+   - `client_id` and `client_secret` — the credentials handed to you in [Exercise 2.2](./README.md#exercise-22---sap-cloud-identity-services-configure-the-agent-gateway-consumer)
    - `username` and `password` — your SAP Cloud Identity Services user credentials
    - `agent_gateway_host` — your Agent Gateway endpoint
 
-2. Run **Fetch User Token**, then **Exchange User Token**. *Fetch User Token* sends a `password` grant to `{{ias_host}}/oauth2/token` and returns a JWT access token; *Exchange User Token* performs a JWT bearer grant (`urn:ietf:params:oauth:grant-type:jwt-bearer`) scoped to the Agent Gateway resource. The exchanged token is stored as `agent_gateway_token` and reused by the discovery requests.
-<br>![](./images//bruno-1.png)
-<br>![](./images//bruno-2.png)
+2. Run **(1) Fetch User Token**-Call. *Fetch User Token* sends a `password` grant to `{{ias_host}}/oauth2/token` and returns a JWT access token.
+<br>![](./images//bruno-9.png)
 
-3. Run the **Fetch ARD Document** request. It sends a GET to `{{agent_gateway_host}}/v1/.well-known/ard.json` with the exchanged token as a Bearer Token and returns the discovery document.
+3. Then run **(2) Exchange User Token**. ; *Exchange User Token* performs a JWT bearer grant (`urn:ietf:params:oauth:grant-type:jwt-bearer`) scoped to the Agent Gateway resource. The exchanged token is stored as `agent_gateway_token` and reused by the upcoming requests.
+<br>![](./images//bruno-10.png)
 
-4. Inspect the response. It has the shape:
+4. Run the **(3) Fetch ARD Document** request. It sends a GET to `{{agent_gateway_host}}/v1/.well-known/ard.json` with the exchanged token as a Bearer Token and returns the discovery document.
+
+5. Inspect the response. It has the shape:
 
    ```json
    {
@@ -164,9 +167,9 @@ Add or adjust the following entries:
    }
    ```
 
-5. Find the entry whose `metadata.callable` is `true` — that is the agent you are allowed to invoke. Note that some entries are **not** callable: `SAP Joule Agent 1` itself has `"callable": false`, while the **SAP Joule Agent 2** is callable (reflect what Systems we have put into the Formation 3 with our Agent Gateway Consumer System).
+6. Find the entry whose `metadata.callable` is `true` — that is the agent you are allowed to invoke. Note that some entries are **not** callable: `SAP Joule Agent 1` itself has `"callable": false`, while the **SAP Joule Agent 2** is callable (reflect what Systems we have put into the Formation 3 with our Agent Gateway Consumer System).
 
-6. From the callable entry, read its agent-card `url` and set the Bruno environment variable **manually**:
+7. From the callable entry, read its agent-card `url` and set the Bruno environment variable **manually**:
    - `joule_agent_agent_card_url` ← the entry's `url` verbatim (the `.../v1/a2a/<ord>/<tenant>/.well-known/agent-card.json` endpoint)
 
    For example, given the callable entry's `url`:
@@ -181,10 +184,10 @@ Add or adjust the following entries:
    |---|---|
    | `joule_agent_agent_card_url` | `https://eu10.access.sapdas.cloud.sap/v1/a2a/sap.joule:agent2:v1/cb4c48c3-c204-3786-a094-a6fefb2ebfff/.well-known/agent-card.json` |
 
-7. The ARD document gave you the high-level catalogue. Now fetch the **agent card** to get the specific details of that agent. Run the **Fetch Agent Card** request — it sends a GET to `{{joule_agent_agent_card_url}}` with the exchanged token as a Bearer Token and returns the agent's capability descriptor.
+8. The ARD document gave you the high-level catalogue. Now fetch the **agent card** to get the specific details of that agent. Run the **(4) Fetch Agent Card** request — it sends a GET to `{{joule_agent_agent_card_url}}` with the exchanged token as a Bearer Token and returns the agent's capability descriptor.
 <br>![](./images//bruno-3.png)
 
-8. In the agent-card response, locate the agent's A2A endpoint — the top-level `url` field of the agent card — and set it on the Bruno environment:
+9. In the agent-card response, locate the agent's A2A endpoint — the top-level `url` field of the agent card — and set it on the Bruno environment:
    - `joule_agent_a2a_server_url` ← the agent card's `url` field (the JSON-RPC endpoint, e.g. `<agent_gateway_host>/v1/a2a/<ordId>/<tenant>/jsonrpc`)
 
    This is the endpoint you invoke in Exercise 2.4.

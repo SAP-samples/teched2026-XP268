@@ -1,11 +1,11 @@
 info:
-  name: Fetch ARD Document
+  name: (4) Fetch Agent Card
   type: http
-  seq: 3
+  seq: 4
 
 http:
   method: get
-  url: "{{agent_gateway_host}}/v1/.well-known/ard.json"
+  url: "{{joule_agent_agent_card_url}}"
   headers:
     - name: authorization
       value: Bearer {{agent_gateway_token}}
