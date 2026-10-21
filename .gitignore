@@ -207,3 +207,5 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,python
+
+exercises/ex2/bruno/environments/teched-xp268-bruno-env-test.yml
