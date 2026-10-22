@@ -29,7 +29,7 @@ Confirm that you have completed all prerequisites before continuing using the Go
 
 ![](./images/gcp-console.png)
 
-1. Sign in (**Note: not necessary with Cloud Shell**). Authorize the requested permissions in the browser when prompted.
+1. Sign in (**Note: not necessary with Cloud Shell - Authorize the requested permissions in the browser when prompted**).
 
 
    ```
@@ -40,35 +40,38 @@ Confirm that you have completed all prerequisites before continuing using the Go
    gcloud auth application-default login
    ```
 
-2. Confirm you have a GCP project with the Vertex AI / Agent Engine APIs enabled. The agent is deployed to Google's Agent Runtime; no service account or key needs to be created — the bridge authenticates to SAP Cloud Identity Services with the application's client secret.
-
 **Configure the SAP Cloud Identity Services Application**
 
 > **Read-through only.** The steps below were already performed in advance for your workshop tenant — you are not expected (and will not have the access) to do them live. Read them to understand how the external agent's identity was established.
 
-3. ✅ The redirect URIs for Gemini Enterprise have already been added to your SAP Cloud Identity Services application for you:
+2. ✅ The redirect URIs for Gemini Enterprise have already been added to your SAP Cloud Identity Services application for you:
 
    - `https://vertexaisearch.cloud.google.com/oauth-redirect`
    - `https://vertexaisearch.cloud.google.com/static/oauth/oauth.html`
 
    ![](./images/sci-redirects.png)
 
-4. ✅ The SAP Cloud Identity Services application already has credentials. Use the same `client_id` and `client_secret` you used in the Bruno collection earlier. You will need them again in step 6 (`OAUTH_CLIENT_ID` / `OAUTH_CLIENT_SECRET`) and for the Gemini Enterprise authorization in Exercise 3.2.
+3. ✅ The SAP Cloud Identity Services application already has credentials. Use the same `client_id` and `client_secret` you used in the Bruno collection earlier. You will need them again in step 5 (`OAUTH_CLIENT_ID` / `OAUTH_CLIENT_SECRET`) and for the Gemini Enterprise authorization in Exercise 3.2.
 
    > **Why the client-secret flow in this hands-on session?** For this workshop the bridge authenticates to SAP Cloud Identity Services with the application's `client_id` / `client_secret`. We chose this path because it is simpler and needs far fewer steps and GCP-side permissions — no service account, no key, and no IAM role grants on the Agent Runtime identity.
    >
    > In a production setup the preferred approach is **RFC 7523 §2.2 private-key JWT client authentication** (a client assertion signed by a GCP service account via Google's `signJwt` API, trusted by SAP Cloud Identity Services as a JWKS-based JWT issuer). That way the runtime never holds a long-lived secret — it mints a short-lived, service-account-signed JWT per request and SAP Cloud Identity Services validates it against the service account's JWKS URL. It requires granting the Agent Runtime identity `roles/iam.serviceAccountTokenCreator` on the signer service account, which is why it is out of scope for this session.
 
+   For reference, this is how the service account would be registered as a trusted JWT issuer in SAP Cloud Identity Services for that production approach:
+
+   ![](./images/sci-jwt-trust-by-issuer-1.png)
+   ![](./images/sci-jwt-trust-by-issuer-2.png)
+
 **Configure and Deploy the Agent**
 
-5. Change into the agent directory and copy the `.env` template:
+4. Change into the agent directory and copy the `.env` template:
 
    ```PowerShell
    cd ./exercises/ex3/gcp-agent-bridge
    cp env.example .env
    ```
 
-6. Set the following variables in `.env`:
+5. Set the following variables in `.env`:
 
    | Variable | Required | Value |
    |---|---|---|
@@ -80,7 +83,7 @@ Confirm that you have completed all prerequisites before continuing using the Go
    | `OAUTH_TOKEN_HOST` | Yes | The SAP Cloud Identity Services tenant base URL, e.g. `https://<tenant>.accounts400.ondemand.com` as used in Bruno `ias_host` |
    | `TOKEN_EXCHANGE_RESOURCE` | Yes | The resource/audience that identifies the downstream service to SAP Cloud Identity Services, for example `urn:sap:identity:application:provider:name:agent-gateway` as used in Bruno `agent_gateway_resource`|
 
-7. Install the tooling, scaffold the deployment infrastructure (one time per project), and deploy:
+6. Install the tooling, scaffold the deployment infrastructure (one time per project), and deploy:
 
     ```PowerShell
     # uv and google-agents-cli are already available in Cloud Shell
@@ -97,13 +100,21 @@ Confirm that you have completed all prerequisites before continuing using the Go
 
 Because the bridge authenticates to SAP Cloud Identity Services with the application's client secret, the deployed Agent Runtime identity needs no extra IAM grant — there is no service account to sign JWTs with.
 
-1. Open the [Agent Registry](https://console.cloud.google.com/agent-platform/agent-registry/agents) in Google Cloud Console, find the deployed `gcp-agent-bridge` agent and **note the reasoning-engine URI** under **Protocols** in the following format:
+1. Open the [Agent Registry](https://console.cloud.google.com/agent-platform/agent-registry/agents) or search via Console Search in Google Cloud Console and select the region **`us-central1`** (the region the agent is deployed to, as set in `agents-cli-manifest.yaml`). Find the deployed `gcp-agent-bridge` agent and **note the reasoning-engine URI** under **Protocols** in the following format:
 
    `projects/<project-number>/locations/<region>/reasoningEngines/<engine-number>`
 
    ![](./images/gcp-agent-2.png)
 
-2. Open [Gemini Enterprise](https://console.cloud.google.com/gemini-enterprise/apps) in Google Cloud Console and create an App.
+2. Open [Gemini Enterprise](https://console.cloud.google.com/gemini-enterprise/apps) or search via Console Search in Google Cloud Console and create an App.
+
+   > **Gemini Enterprise not activated yet?** If Gemini Enterprise is not yet enabled on your project, you will be prompted to start the **30-day free trial** — start it to continue.
+   >
+   > ![](./images/gcp-gemini-enterprise-trial-1.png)
+   >
+   > Then configure the app as shown below: keep the predefined **App name** and set **Multi-region** to **global**.
+   >
+   > ![](./images/gcp-gemini-enterprise-trial-2.png)
 
    ![](./images/gcp-gemini-enterprise-1.png)
 
@@ -139,10 +150,21 @@ Because the bridge authenticates to SAP Cloud Identity Services with the applica
 
 ## Exercise 3.3 - Test End-to-End: Gemini Agent to AGW to Joule Agent
 
-1. Open Gemini Enterprise and select the app you created in Exercise 3.2.
+1. Open [Gemini Enterprise](https://console.cloud.google.com/gemini-enterprise) or search via Console Search and select the app you created in Exercise 3.2.
 
-2. Send a message as in Bruno to the `SAP Billing Assistant` and verify that:
-   - Gemini Enterprise prompts you to sign in with your SAP Cloud Identity Services credentials.
+2. Open the Preview
+![](./images/gcp-gemini-enterprise-6.png)
+
+3. Tag the attached Agent with `@`
+![](./images/gcp-gemini-enterprise-7.png)
+![](./images/gcp-gemini-enterprise-8.png)
+
+3. Send a message as in Bruno to the `SAP Billing Assistant`.
+
+   ![](./images/gcp-gemini-enterprise-9.png)
+
+   Verify that:
+   - Gemini Enterprise prompts you to sign in with your SAP Cloud Identity Services credentials. Use the username (`XP268-XYZ`) and password as used in Bruno.
    - After authentication, the agent forwards your message through SAP's Agent Gateway to your Joule agent `SAP Billing Assistant`.
    - Your Joule agent's response is returned and displayed in Gemini Enterprise.
 
