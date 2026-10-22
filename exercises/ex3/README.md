@@ -25,9 +25,12 @@ The service account signs only the client assertion (proving *which app* is call
 
 **Create a Google Cloud Service Account**
 
-Confirm that you have completed all prerequisites before continuing.
+Confirm that you have completed all prerequisites before continuing using the Google Cloud CLI on your local machine or with Cloud Shell:
 
-1. Sign in using the Google Cloud CLI.
+![](./images/gcp-console.png)
+
+1. Sign in (**Note: not necessary with Cloud Shell**)
+
 
    ```
    gcloud auth login
