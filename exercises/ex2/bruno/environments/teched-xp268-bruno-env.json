@@ -1,0 +1,73 @@
+{
+  "name": "teched-xp268-bruno-env",
+  "variables": [
+    {
+      "name": "ias_host",
+      "value": "https://teched02.accounts.cloud.sap",
+      "type": "text",
+      "enabled": true,
+      "secret": false
+    },
+    {
+      "name": "client_id",
+      "value": "f37ac2a7-431d-46e5-9b6e-c75f4710d2bf",
+      "type": "text",
+      "enabled": true,
+      "secret": false
+    },
+    {
+      "name": "client_secret",
+      "value": "",
+      "type": "text",
+      "enabled": true,
+      "secret": true
+    },
+    {
+      "name": "username",
+      "value": "xp268-XXX",
+      "type": "text",
+      "enabled": true,
+      "secret": false
+    },
+    {
+      "name": "password",
+      "value": "",
+      "type": "text",
+      "enabled": true,
+      "secret": true
+    },
+    {
+      "name": "agent_gateway_resource",
+      "value": "urn:sap:identity:application:provider:name:agent-gateway",
+      "type": "text",
+      "enabled": true,
+      "secret": false
+    },
+    {
+      "name": "agent_gateway_host",
+      "value": "https://eu10.access.sapdas.cloud.sap",
+      "type": "text",
+      "enabled": true,
+      "secret": false
+    },
+    {
+      "name": "joule_agent_agent_card_url",
+      "value": "https://eu10.access.sapdas.cloud.sap/v1/a2a/sap.agtblgasstn:agent:billing-assistant-agent:v1/fee0c264-cf2a-4035-86af-ae75e0f7f2fc/.well-known/agent-card.json",
+      "type": "text",
+      "enabled": true,
+      "secret": false
+    },
+    {
+      "name": "joule_agent_a2a_server_url",
+      "value": "https://eu10.access.sapdas.cloud.sap/v1/a2a/sap.agtblgasstn:agent:billing-assistant-agent:v1/fee0c264-cf2a-4035-86af-ae75e0f7f2fc/jsonrpc",
+      "type": "text",
+      "enabled": true,
+      "secret": false
+    }
+  ],
+  "info": {
+    "type": "bruno-environment",
+    "exportedAt": "2026-10-22T09:15:58.928Z",
+    "exportedUsing": "Bruno/v3.1.3"
+  }
+}
