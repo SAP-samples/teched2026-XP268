@@ -25,8 +25,12 @@ The client credentials prove *which app* is calling. The user identity is always
 
 **Sign in to Google Cloud**
 
-Confirm that you have completed all prerequisites before continuing using the Google Cloud CLI on your local machine or with Cloud Shell:
+Confirm that you have completed all prerequisites before continuing using the Google Cloud CLI on your local machine or with Google Cloud Shell:
 
+ Access [console.cloud.google.com](https://console.cloud.google.com/) in the browser and log in with the provided credentials for Google Cloud.
+
+![](./images/gcp-1.png)
+![](./images/gcp-2.png)
 ![](./images/gcp-console.png)
 
 1. Sign in (**Note: not necessary with Cloud Shell - Authorize the requested permissions in the browser when prompted**).
