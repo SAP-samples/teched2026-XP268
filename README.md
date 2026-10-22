@@ -2,11 +2,11 @@
 
 This repository contains the material for the SAP TechEd 2026 session called XP268 - Govern the agent economy: Secure A2A using SAP Agent Gateway.
 
+![](/assets/images/sap-agent-gateway.png)
+
 ## Overview
 
 As the agent economy grows, the hard problem shifts from building a single agent to letting agents from different vendors and platforms call each other securely across organizational boundaries. This hands-on session gives you direct experience with cross-provider agent-to-agent (A2A) communication governed by **SAP Agent Gateway** — the component that establishes identity, enforces trust, and controls which agents a caller is allowed to invoke.
-
-![](/assets/images/sap-agent-gateway.png)
 
 Across the exercises you will follow a single A2A call from the outside in, working across two landscapes — Google Cloud with Gemini Enterprise and SAP Business AI Platform. You'll start by exploring the reference architecture that connects agents in the Google ecosystem to SAP agents through the Agent Gateway. As an admin, you'll see how the calling agent is registered as an Agent Gateway Consumer in SAP for Me and SAP Cloud Identity Services so the gateway trusts it. Then, as a developer, you'll discover which agents are reachable and callable through that consumer using Agent Resource Discovery (ARD), and call one end-to-end with the Bruno API client — following the OAuth token exchange into an A2A invocation. Finally, you'll integrate a Gemini Enterprise agent so it can call through SAP's Agent Gateway to a Joule agent over a three-legged OAuth flow, tracing a secure, governed A2A call all the way from Google Gemini to the SAP side.
 
