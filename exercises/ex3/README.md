@@ -29,7 +29,7 @@ Confirm that you have completed all prerequisites before continuing using the Go
 
 ![](./images/gcp-console.png)
 
-1. Sign in (**Note: not necessary with Cloud Shell**)
+1. Sign in (**Note: not necessary with Cloud Shell**). Authorize the requested permissions in the browser when prompted.
 
 
    ```
@@ -55,6 +55,10 @@ Confirm that you have completed all prerequisites before continuing using the Go
 
 4. ✅ The SAP Cloud Identity Services application already has credentials. Use the same `client_id` and `client_secret` you used in the Bruno collection earlier. You will need them again in step 6 (`OAUTH_CLIENT_ID` / `OAUTH_CLIENT_SECRET`) and for the Gemini Enterprise authorization in Exercise 3.2.
 
+   > **Why the client-secret flow in this hands-on session?** For this workshop the bridge authenticates to SAP Cloud Identity Services with the application's `client_id` / `client_secret`. We chose this path because it is simpler and needs far fewer steps and GCP-side permissions — no service account, no key, and no IAM role grants on the Agent Runtime identity.
+   >
+   > In a production setup the preferred approach is **RFC 7523 §2.2 private-key JWT client authentication** (a client assertion signed by a GCP service account via Google's `signJwt` API, trusted by SAP Cloud Identity Services as a JWKS-based JWT issuer). That way the runtime never holds a long-lived secret — it mints a short-lived, service-account-signed JWT per request and SAP Cloud Identity Services validates it against the service account's JWKS URL. It requires granting the Agent Runtime identity `roles/iam.serviceAccountTokenCreator` on the signer service account, which is why it is out of scope for this session.
+
 **Configure and Deploy the Agent**
 
 5. Change into the agent directory and copy the `.env` template:
@@ -79,6 +83,7 @@ Confirm that you have completed all prerequisites before continuing using the Go
 7. Install the tooling, scaffold the deployment infrastructure (one time per project), and deploy:
 
     ```PowerShell
+    # uv and google-agents-cli are already available in Cloud Shell
     pip install uv
     uv tool install google-agents-cli
 
