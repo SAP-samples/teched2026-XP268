@@ -29,9 +29,17 @@ Confirm that you have completed all prerequisites before continuing using the Go
 
  Access [console.cloud.google.com](https://console.cloud.google.com/) in the browser and log in with the provided credentials for Google Cloud.
 
+Enter provided e-mail for Google Cloud account to sign in. Choose **NEXT**
 ![](./images/gcp-1.png)
+
+Enter provided password for Google Cloud account. Choose **NEXT**
 ![](./images/gcp-2.png)
-![](./images/gcp-console.png)
+
+Activate Cloud Shell
+![](./images/gcp-3.png)
+
+Authorize Cloud Shell
+![](./images/gcp-4.png)
 
 1. Sign in (**Note: not necessary with Cloud Shell - Authorize the requested permissions in the browser when prompted**).
 
@@ -68,14 +76,24 @@ Confirm that you have completed all prerequisites before continuing using the Go
 
 **Configure and Deploy the Agent**
 
-4. Change into the agent directory and copy the `.env` template:
+4. On your local machine change into the agent directory of the locally cloned repository directory and copy the `.env` template:
 
    ```PowerShell
    cd ./exercises/ex3/gcp-agent-bridge
    cp env.example .env
    ```
 
-5. Set the following variables in `.env`:
+   ![](./images/ps-1.png)
+
+5. Open the `.env` in a text editor or Visual Studio Code, e.g. with following command
+
+    ```PowerShell
+    code .\.env
+    ```
+
+    ![](./images/ps-2.png)
+
+6. Set the following variables in `.env`:
 
    | Variable | Required | Value |
    |---|---|---|
@@ -84,27 +102,76 @@ Confirm that you have completed all prerequisites before continuing using the Go
    | `DOWNSTREAM_AGENT_URL` | Yes | The downstream A2A JSON-RPC endpoint — your Agent Gateway A2A URL for the Joule agent as used in Bruno `<joule_agent_a2a_server_url>` |
    | `OAUTH_CLIENT_ID` | Yes | The `client_id` from the `Gemini Enterprise Agent Gateway Consumer` as used in Bruno |
    | `OAUTH_CLIENT_SECRET` | Yes | The `client_secret` from the `Gemini Enterprise Agent Gateway Consumer` as used in Bruno |
-   | `OAUTH_TOKEN_HOST` | Yes | The SAP Cloud Identity Services tenant base URL, e.g. `https://<tenant>.accounts400.ondemand.com` as used in Bruno `ias_host` |
+   | `OAUTH_TOKEN_HOST` | Yes | The SAP Cloud Identity Services tenant base URL, e.g. `https://<tenant>.accounts.ondemand.com` as used in Bruno `ias_host` |
    | `TOKEN_EXCHANGE_RESOURCE` | Yes | The resource/audience that identifies the downstream service to SAP Cloud Identity Services, for example `urn:sap:identity:application:provider:name:agent-gateway` as used in Bruno `agent_gateway_resource`|
 
-6. Install the tooling, scaffold the deployment infrastructure (one time per project), and deploy:
+    ![](./images/code-1.png)
 
-    ```PowerShell
-    # uv and google-agents-cli are already available in Cloud Shell
-    pip install uv
-    uv tool install google-agents-cli
+7. Create a zip archive from the `gcp-agent-bridge`-folder
 
-    uv sync                          # resolves dependencies and generates uv.lock (the Docker build needs it)
-    agents-cli deploy                # pass .env (including OAUTH_CLIENT_SECRET) to the runtime
+    ![](./images/explorer-1.png)
+
+8. Navigate back to Google Cloud Shell in your browser (*You might to reconnect and re-authorize*) and upload the generated zip archive
+    
+    ![](./images/gcs-1.png)
+
+    Choose File
+    
+    ![](./images/gcs-2.png) 
+    
+    Locate the the zip archive and select it
+
+    ![](./images/gcs-3.png)
+    
+    Upload the file
+    
+    ![](./images/gcs-3-1.png)
+
+    Check upload and unzip the file using
+     ```PowerShell
+    unzip gcp-agent-bridge.zip
     ```
+    ![](./images/gcs-4.png)
 
+8. Install the tooling in Cloud Shell , scaffold the deployment infrastructure (one time per project), and deploy:
+
+    ```Bash
+    # uv and google-agents-cli are already available in Cloud Shell
+    pip install uv                   # uv might already be installed in Cloud Shell
+    uv tool install google-agents-cli
+    
+    cd gcp-agent-bridge              # navigate in the agent directory
+    uv sync                          # resolves dependencies and generates uv.lock (the Docker build needs it)
+    agents-cli deploy --project <your-project>                # pass .env (including OAUTH_CLIENT_SECRET) to the runtime
+    ```
+    ![](./images/gcs-5.png)
+
+    ![](./images/gcs-6.png)
+
+    Deploy the agent while specifying your current project in the deployment command. Deployment of the agent might take some minutes.
+    
+    ![](./images/gcs-7.png)
+    
+    You can monitor and check the status of the deployment using 
+    ```Bash
+    # uv and google-agents-cli are already available in Cloud Shell
+    agents-cli deploy --status
+    ```
+    ![](./images/gcs-8.png)
+    
+    Once successful you can also see the details of the deployed agent.
+    
     Make sure `OAUTH_CLIENT_SECRET` is passed to the deployed runtime — the agent uses the client secret to authenticate the client leg of the token exchange with SAP Cloud Identity Services.
 
 ## Exercise 3.2 - Connect Agent to Gemini Enterprise
 
 Because the bridge authenticates to SAP Cloud Identity Services with the application's client secret, the deployed Agent Runtime identity needs no extra IAM grant — there is no service account to sign JWTs with.
 
-1. Open the [Agent Registry](https://console.cloud.google.com/agent-platform/agent-registry/agents) or search via Console Search in Google Cloud Console and select the region **`us-central1`** (the region the agent is deployed to, as set in `agents-cli-manifest.yaml`). Find the deployed `gcp-agent-bridge` agent and **note the reasoning-engine URI** under **Protocols** in the following format:
+1. Open the [Agent Registry](https://console.cloud.google.com/agent-platform/agent-registry/agents) or search via Console Search in Google Cloud Console
+    
+    ![](./images/gcp-5.png)
+
+Select the region **`us-central1`** (the region the agent is deployed to, as set in `agents-cli-manifest.yaml`). Find the deployed `gcp-agent-bridge` agent and **note the reasoning-engine URI** under **Protocols** in the following format:
 
    `projects/<project-number>/locations/<region>/reasoningEngines/<engine-number>`
 
@@ -116,11 +183,12 @@ Because the bridge authenticates to SAP Cloud Identity Services with the applica
    >
    > ![](./images/gcp-gemini-enterprise-trial-1.png)
    >
-   > Then configure the app as shown below: keep the predefined **App name** and set **Multi-region** to **global**.
-   >
-   > ![](./images/gcp-gemini-enterprise-trial-2.png)
-
+   
+Then configure the app as shown below: keep the predefined **App name** and set **Multi-region** to **global**.
+    
    ![](./images/gcp-gemini-enterprise-1.png)
+
+   ![](./images/gcp-gemini-enterprise-trial-2.png)
 
 3. Add the deployed agent. Select `Agents` &rarr; `Add agent` &rarr; `Custom agent via Agent Runtime` &rarr; `Add`.
 
