@@ -109,7 +109,7 @@ Before you can call an agent, you need to know **which** agents are reachable th
 
 You run discovery with the provided Bruno collection, starting from the same OAuth token flow you will reuse to invoke the agent.
 
-1. Open Bruno and open the provided collection from [`exercises/ex2/bruno/`](./bruno/) (if not already imported). 
+1. Open Bruno (discard the welcome screen if it pops up) and open the provided collection from [`exercises/ex2/bruno/`](./bruno/) (if not already imported). 
 <br>![](./images//bruno-5.png)
 Select the folder [`exercises/ex2/bruno/`](./bruno/)
 
@@ -123,6 +123,7 @@ Add or adjust the following entries:
    - `username` and `password` — your SAP Cloud Identity Services user credentials
    - `agent_gateway_host` — your Agent Gateway endpoint
 
+> **Note** Windows shows a "send" button on Bruno to send a request while Mac shows only an arrow.
 2. Run **(1) Fetch User Token**-Call. *(1) Fetch User Token* sends a `password` grant to `{{ias_host}}/oauth2/token` and returns a JWT access token.
 <br>![](./images//bruno-9.png)
 
@@ -207,8 +208,10 @@ With `joule_agent_a2a_server_url` read from the agent card in discovery, you now
 
 2. If your `agent_gateway_token` has expired, re-run **(1) Fetch User Token** and **(2) Exchange User Token** to refresh it.
 
-3. Run the **(5) Invoke Agent** request. It sends an A2A (Agent-to-Agent Protocol) call as a JSON-RPC 2.0 `message/send` to `{{joule_agent_a2a_server_url}}` with a user message — feel free to change the `text` field to something of your own. Inspect the response and verify the agent replied correctly.
+3. Run the **(5) Invoke Agent** request. It sends an A2A (Agent-to-Agent Protocol) call as a JSON-RPC 2.0 `message/send` to `{{joule_agent_a2a_server_url}}` with a user message — feel free to change the `text` field to something of your own e.g., `"What can you do for me?"`. Inspect the response and verify the agent replied correctly.
 <br>![](./images//bruno-17.png)
+
+> **Note** Since this is an agentic request, the request can take some time (up to 2min)
 
 ## Summary
 

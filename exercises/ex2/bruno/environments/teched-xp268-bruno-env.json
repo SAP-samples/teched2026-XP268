@@ -52,14 +52,14 @@
     },
     {
       "name": "joule_agent_agent_card_url",
-      "value": "https://eu10.access.sapdas.cloud.sap/v1/a2a/sap.agtblgasstn:agent:billing-assistant-agent:v1/fee0c264-cf2a-4035-86af-ae75e0f7f2fc/.well-known/agent-card.json",
+      "value": "https://.../.well-known/agent-card.json",
       "type": "text",
       "enabled": true,
       "secret": false
     },
     {
       "name": "joule_agent_a2a_server_url",
-      "value": "https://eu10.access.sapdas.cloud.sap/v1/a2a/sap.agtblgasstn:agent:billing-assistant-agent:v1/fee0c264-cf2a-4035-86af-ae75e0f7f2fc/jsonrpc",
+      "value": "https://.../jsonrpc",
       "type": "text",
       "enabled": true,
       "secret": false
