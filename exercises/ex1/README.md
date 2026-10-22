@@ -13,12 +13,13 @@ After completing these steps you will have:
 
 The exercises use Bruno API collections and configuration files from this repository. Clone it to your local machine before proceeding.
 
-1. Open a terminal and run:
+1. Open a Terminal or the Command Prompt and run:
 
 ```bash
 git clone https://github.com/SAP-samples/teched2026-XP268.git
 cd teched2026-XP268
 ```
+<br>![](./images//cmd-1.png)
 
 2. You will point the Bruno API client at this repository's collection in Exercise 2, and run CLI commands from this directory in Exercise 3 — so keep the terminal handy.
 
@@ -35,7 +36,7 @@ Before diving into the hands-on steps, familiarize yourself with the reference a
 3. As you read, look for the components you will encounter in the exercises ahead: SAP's Agent Gateway, Joule Agents out of the Autonomouse Enterprise and Gemini Enterprise.
 
 <details>
-<summary>Solution — SAP Architecutre Center links</summary>
+<summary>Solution — SAP Architecture Center links</summary>
 
 - [Agentic AI & AI Agents on SAP Business AI Platform](https://architecture.learning.sap.com/docs/ref-arch/98efa0)
 - [Integrating Joule Agents into Your Ecosystem](https://architecture.learning.sap.com/docs/ref-arch/fe0d1d)
