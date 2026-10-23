@@ -220,6 +220,20 @@ Then configure the app as shown below: keep the predefined **App name** and set 
 
    ![](./images/gcp-gemini-enterprise-4.png)
 
+6. We now also need to grant access permissions to the created agent.
+
+   1. Click on the created agent `SAP Billing Assistant`.
+
+      ![](./images/gcp-gemini-enterprise-5-1.png)
+
+   2. Go to `User permissions` and select `Add user`.
+
+      ![](./images/gcp-gemini-enterprise-5-2.png)
+
+   3. Choose `All users` and assign the role `Agent User`, click `Save`.
+
+      ![](./images/gcp-gemini-enterprise-5-3.png)
+
 ## Exercise 3.3 - Test End-to-End: Gemini Agent to AGW to Joule Agent
 
 1. Open [Gemini Enterprise](https://console.cloud.google.com/gemini-enterprise) or search via Console Search and select the app you created in Exercise 3.2.
@@ -237,6 +251,7 @@ Then configure the app as shown below: keep the predefined **App name** and set 
 
    Verify that:
    - Gemini Enterprise prompts you to sign in with your SAP Cloud Identity Services credentials. Use the username (`XP268-XYZ`) and password as used in Bruno.
+   ![](./images/gcp-gemini-enterprise-10.png)
    - After authentication, the agent forwards your message through SAP's Agent Gateway to your Joule agent `SAP Billing Assistant`.
    - Your Joule agent's response is returned and displayed in Gemini Enterprise.
 
