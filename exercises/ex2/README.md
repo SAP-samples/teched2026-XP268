@@ -217,4 +217,4 @@ With `joule_agent_a2a_server_url` read from the agent card in discovery, you now
 
 You've now read through the Agent Gateway Consumer setup in SAP for Me and SAP Cloud Identity Services, discovered the callable agent via ARD, and successfully called the Joule agent through SAP's Agent Gateway.
 
-Continue to - [Exercise 3 - Configure Connection from Gemini Enterprise Agent](../ex3/README.md)
+Continue to - [Exercise 3 - Configure Connection from Gemini Enterprise](../ex3/README.md)

@@ -1,7 +1,7 @@
 [project]
 name = "gcp-agent-bridge"
 version = "0.1.0"
-description = "Generic Gemini-Enterprise-fronted A2A proxy agent with RFC 7523 jwt-bearer token exchange."
+description = "Generic Gemini-Enterprise-fronted A2A proxy agent with RFC 7523 jwt-bearer principal-propagation token exchange."
 authors = [
     {name = "Your Name", email = "your@email.com"},
 ]
@@ -9,7 +9,6 @@ authors = [
 
 dependencies = [
     "google-adk[bigquery-analytics,gcp,otel-gcp]>=2.8.0,<2.9.0",
-    "google-api-python-client>=2.0.0,<3.0.0",
     "opentelemetry-resourcedetector-gcp<=1.12.0a0",
     "gcsfs>=2024.11.0",
     "a2a-sdk[http-server]>=1.0,<2",

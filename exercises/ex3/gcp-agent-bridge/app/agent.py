@@ -22,9 +22,10 @@ scoped to the downstream resource (RFC 7523 jwt-bearer principal propagation),
 and calls the downstream agent on the user's behalf. It runs no OAuth flow
 itself.
 
-Client authentication for the token exchange uses an RFC 7523 §2.2 client
-assertion signed by a GCP service account (see jwt_bearer.py) — no client secret
-is held by the runtime.
+Client authentication for the token exchange uses the application's
+``client_id`` / ``client_secret`` (OAuth 2.0 client credentials in the request
+body). The forwarded user token is still used verbatim as the jwt-bearer
+``assertion``, so the agent can never choose an arbitrary user ``sub``.
 
 All deployment-specific values are read from the environment. See .env.example
 and README.md for what each one is and how to obtain it.
@@ -41,8 +42,6 @@ from google.adk.models import Gemini
 from google.adk.tools import FunctionTool, ToolContext
 from google.genai import types
 
-from app.jwt_bearer import JwtBearerAssertionMinter
-
 # ── Configuration (fill in via .env / deployment env — see README.md) ────────
 
 # Gemini model the proxy agent runs on.
@@ -57,19 +56,18 @@ AGENT_NAME = os.environ.get("AGENT_NAME", "proxy_agent")
 # A2A endpoint of the downstream agent every request is forwarded to.
 DOWNSTREAM_AGENT_URL = os.environ.get("DOWNSTREAM_AGENT_URL", "")
 
-# IdP application client_id — used both as the `sub` of the client assertion and
-# as `client_id` in the token exchange.
+# IdP application client_id — used as `client_id` in the token exchange.
 OAUTH_CLIENT_ID = os.environ.get("OAUTH_CLIENT_ID", "")
 
-# IdP base URL. The token endpoint is derived as `<host>/oauth2/token`, and this
-# value is also the `aud` of the signed client assertion.
+# IdP application client_secret — used to authenticate the client leg of the
+# token exchange (OAuth 2.0 client credentials in the request body).
+OAUTH_CLIENT_SECRET = os.environ.get("OAUTH_CLIENT_SECRET", "")
+
+# IdP base URL. The token endpoint is derived as `<host>/oauth2/token`.
 OAUTH_TOKEN_HOST = os.environ.get("OAUTH_TOKEN_HOST", "")
 
 # Resource / audience the exchanged token should be scoped to (the downstream).
 TOKEN_EXCHANGE_RESOURCE = os.environ.get("TOKEN_EXCHANGE_RESOURCE", "")
-
-# Email of the GCP service account whose key signs the client assertion.
-RUNTIME_SA_EMAIL = os.environ.get("RUNTIME_SA_EMAIL", "")
 
 # Gemini Enterprise authorization id that keys the forwarded user token in
 # session state. Only needed when more than one authorization is registered.
@@ -78,19 +76,6 @@ GE_AUTH_ID = os.environ.get("GE_AUTH_ID", "")
 # Token endpoint path appended to OAUTH_TOKEN_HOST. Change here if your IdP uses
 # a different path.
 _TOKEN_PATH = "/oauth2/token"
-
-_minter: JwtBearerAssertionMinter | None = None
-
-
-def _get_minter() -> JwtBearerAssertionMinter:
-    global _minter
-    if _minter is None:
-        _minter = JwtBearerAssertionMinter(
-            client_id=OAUTH_CLIENT_ID,
-            audience=OAUTH_TOKEN_HOST,
-            sa_email=RUNTIME_SA_EMAIL,
-        )
-    return _minter
 
 
 def _forwarded_token(tool_context: ToolContext) -> str | None:
@@ -113,22 +98,18 @@ async def _exchange_token(forwarded_token: str) -> str:
 
     RFC 7523 jwt-bearer principal propagation: the IdP re-mints the forwarded
     user token with the downstream resource as the audience (``resource``) while
-    preserving ``sub``. Client authentication uses a service-account-signed
-    client assertion (RFC 7523 §2.2) instead of a client secret; the IdP
-    validates it against the SA's JWKS URL configured in the application's JWT
-    trust entry.
+    preserving ``sub``. Client authentication uses the application's
+    ``client_id`` / ``client_secret`` sent in the request body.
 
     Raises ``httpx.HTTPError`` on transport/status failures and ``RuntimeError``
     on an IdP error body or a missing ``access_token``.
     """
-    client_assertion = _get_minter().mint_client_assertion()
     payload = {
         "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
         "assertion": forwarded_token,
         "resource": TOKEN_EXCHANGE_RESOURCE,
         "client_id": OAUTH_CLIENT_ID,
-        "client_assertion": client_assertion,
-        "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+        "client_secret": OAUTH_CLIENT_SECRET,
         "token_format": "jwt",
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -183,8 +164,8 @@ async def call_downstream_agent(request: str, tool_context: ToolContext) -> str:
         return "Proxy misconfigured: DOWNSTREAM_AGENT_URL is not set."
     if not OAUTH_TOKEN_HOST:
         return "Proxy misconfigured: OAUTH_TOKEN_HOST is not set."
-    if not RUNTIME_SA_EMAIL:
-        return "Proxy misconfigured: RUNTIME_SA_EMAIL is not set."
+    if not OAUTH_CLIENT_SECRET:
+        return "Proxy misconfigured: OAUTH_CLIENT_SECRET is not set."
 
     forwarded_token = _forwarded_token(tool_context)
     if not forwarded_token:
