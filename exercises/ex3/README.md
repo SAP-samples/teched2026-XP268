@@ -1,4 +1,4 @@
-# Exercise 3 - Configure Connection from Gemini Enterprise Agent
+# Exercise 3 - Configure Connection from Gemini Enterprise
 
 In this exercise, you will deploy a bridge agent to Google's Agent Runtime that enables Gemini Enterprise to call your Joule agent through SAP's Agent Gateway using a three-legged OAuth flow.
 
@@ -137,8 +137,8 @@ Authorize Cloud Shell
 
     ```Bash
     # uv and google-agents-cli are already available in Cloud Shell
-    pip install uv                   # uv might already be installed in Cloud Shell
-    uv tool install google-agents-cli
+    # pip install uv                  
+    # uv tool install google-agents-cli
     
     cd gcp-agent-bridge              # navigate in the agent directory
     uv sync                          # resolves dependencies and generates uv.lock (the Docker build needs it)
