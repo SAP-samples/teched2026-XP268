@@ -34,7 +34,7 @@ The end-to-end flow is captured in the reference architecture on the [SAP Archit
     - [Exercise 2.2 - SAP Cloud Identity Services: Configure the Agent Gateway Consumer](exercises/ex2#exercise-22-sap-cloud-identity-services-configure-the-agent-gateway-consumer)
     - [Exercise 2.3 - Discover the Agent via ARD](exercises/ex2#exercise-23-discover-the-agent-via-ard)
     - [Exercise 2.4 - Invoke the SAP Agent with Bruno](exercises/ex2#exercise-24-invoke-the-sap-agent-with-bruno)
-- [Exercise 3 - Configure Connection from Gemini Enterprise Agent](exercises/ex3/)
+- [Exercise 3 - Configure Connection from Gemini Enterprise](exercises/ex3/)
     - [Exercise 3.1 - Deploy Agent on Google's Agent Platform and Configure Connection to SAP's Agent Gateway](exercises/ex3#exercise-31-deploy-agent-on-googles-agent-platform-and-configure-connection-to-saps-agent-gateway)
     - [Exercise 3.2 - Connect Agent to Gemini Enterprise](exercises/ex3#exercise-32-connect-agent-to-gemini-enterprise)
     - [Exercise 3.3 - Test End-to-End: Gemini Agent to AGW to Joule Agent](exercises/ex3#exercise-33-test-end-to-end-gemini-agent-to-agw-to-custom-agent)
@@ -68,4 +68,4 @@ Please read the [SAP Open Source Code of Conduct](https://github.com/SAP-samples
 Support for the content in this repository is available during the actual time of the online session for which this content has been designed. Otherwise, you may request support via the [Issues](../../issues) tab.
 
 ## License
-Copyright 2026 SAP SE or an SAP affiliate company. Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/<your-project>).
+Copyright 2026 SAP SE or an SAP affiliate company. Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP-samples/teched2026-XP268).
