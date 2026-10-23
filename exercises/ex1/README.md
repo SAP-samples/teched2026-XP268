@@ -19,9 +19,24 @@ The exercises use Bruno API collections and configuration files from this reposi
 git clone https://github.com/SAP-samples/teched2026-XP268.git
 cd teched2026-XP268
 ```
-<br>![](./images//cmd-1.png)
+<br>![](./images/cmd-1.png)
 
 2. You will point the Bruno API client at this repository's collection in Exercise 2, and run CLI commands from this directory in Exercise 3 — so keep the terminal handy.
+
+3. Get your logins and variables
+
+- Open the cloned `teched2026-XP268` repository folder (note the location in Terminal) and extract the archive `xp268.zip` by right-clicking and selecting `Extract All...`
+![](./images/extract-parameters-1.png)
+- Continue with `Extract`
+![](./images/extract-parameters-2.png)
+- You will be prompted for a password, which you get from your session speakers - enter it and click `OK`
+![](./images/extract-parameters-3.png)
+- Open the extracted file `xp268.txt`
+![](./images/extract-parameters-4.png)
+- Choose Visual Studio Code
+![](./images/extract-parameters-5.png)
+- Here we go - keep this file open throughout the workshop, as you will need it again and again
+![](./images/extract-parameters-6.png)
 
 ## Explore the Architecture
 

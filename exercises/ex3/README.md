@@ -32,13 +32,19 @@ Confirm that you have completed all prerequisites before continuing using the Go
 Enter provided e-mail for Google Cloud account to sign in. Choose **NEXT**
 ![](./images/gcp-1.png)
 
-Enter provided password for Google Cloud account. Choose **NEXT**
+Enter provided password for Google Cloud account. Choose **NEXT**.
+> **In case any Terms of Service or legal notices are shown, please read through them and click to accept if you agree, in order to continue the session.**
+
 ![](./images/gcp-2.png)
+
+Select the project with the id `sapteched26ber-21<XY>` if it's not selected already
+![](./images/gcp-2-1.png)
+![](./images/gcp-2-2.png)
 
 Activate Cloud Shell
 ![](./images/gcp-3.png)
 
-Authorize Cloud Shell
+Authorize and Continue with Cloud Shell
 ![](./images/gcp-4.png)
 
 1. Sign in (**Note: not necessary with Cloud Shell - Authorize the requested permissions in the browser when prompted**).
@@ -168,8 +174,11 @@ Authorize Cloud Shell
 Because the bridge authenticates to SAP Cloud Identity Services with the application's client secret, the deployed Agent Runtime identity needs no extra IAM grant — there is no service account to sign JWTs with.
 
 1. Open the [Agent Registry](https://console.cloud.google.com/agent-platform/agent-registry/agents) or search via Console Search in Google Cloud Console
+
+> Please enable the APIs if not already enabled by clicking `Enable Agent Registry API` and `Enable` in the popup that appears.
+![](./images/gcp-agent-registry-apis.png)
     
-    ![](./images/gcp-5.png)
+![](./images/gcp-5.png)
 
 Select the region **`us-central1`** (the region the agent is deployed to, as set in `agents-cli-manifest.yaml`). Find the deployed `gcp-agent-bridge` agent and **note the reasoning-engine URI** under **Protocols** in the following format:
 
