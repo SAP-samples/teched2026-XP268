@@ -1,4 +1,4 @@
-# Exercise 3 - Configure Connection from Gemini Enterprise Agent
+# Exercise 3 - Configure Connection from Gemini Enterprise
 
 In this exercise, you will deploy a bridge agent to Google's Agent Runtime that enables Gemini Enterprise to call your Joule agent through SAP's Agent Gateway using a three-legged OAuth flow.
 
