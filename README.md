@@ -11,7 +11,7 @@ As the agent economy grows, the hard problem shifts from building a single agent
 Across the exercises you will follow a single A2A call from the outside in, working across two landscapes — Google Cloud with Gemini Enterprise and SAP Business AI Platform. You'll start by exploring the reference architecture that connects agents in the Google ecosystem to SAP agents through the Agent Gateway. As an admin, you'll see how the calling agent is registered as an Agent Gateway Consumer in SAP for Me and SAP Cloud Identity Services so the gateway trusts it. Then, as a developer, you'll discover which agents are reachable and callable through that consumer using Agent Resource Discovery (ARD), and call one end-to-end with the Bruno API client — following the OAuth token exchange into an A2A invocation. Finally, you'll integrate a Gemini Enterprise agent so it can call through SAP's Agent Gateway to a Joule agent over a three-legged OAuth flow, tracing a secure, governed A2A call all the way from Google Gemini to the SAP side.
 
 The end-to-end flow is captured in the reference architecture on the [SAP Architecture Center](https://architecture.learning.sap.com):
-[![SAP Architecture Center: Integrating Joule Agents into Your Ecosystem](https://architecture.learning.sap.com/architecture-b2775765e58bdd22.svg)](https://architecture.learning.sap.com/architecture-b2775765e58bdd22.svg)
+![Gemini Enterprise Integration with Joule Agents](https://architecture.learning.sap.com/architecture-e7ec0d75ab0abf64.svg)
 
 
 ## Requirements
