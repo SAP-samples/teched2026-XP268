@@ -1,5 +1,7 @@
 # XP268 - Govern the Agent Economy: Secure A2A using SAP's Agent Gateway
 
+[![REUSE status](https://api.reuse.software/info/github.com/SAP-samples/teched2026-XP268)](https://api.reuse.software/info/github.com/SAP-samples/teched2026-XP268)
+
 This repository contains the material for the SAP TechEd 2026 session called XP268 - Govern the agent economy: Secure A2A using SAP Agent Gateway.
 
 ![](/assets/images/sap-agent-gateway.png)
