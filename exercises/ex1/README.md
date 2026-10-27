@@ -46,7 +46,7 @@ Before diving into the hands-on steps, familiarize yourself with the reference a
 
 2. Search for and explore the following two reference architectures:
    - **Agentic AI & AI Agents on SAP Business AI Platform** — the foundational architecture for SAP's agent ecosystem
-   - **Integrating AI Agents into the Google Ecosystem** — describes how Gemini Enterprise connects to SAP agents through SAP's Agent Gateway
+   - **Gemini Enterprise Integration with Joule Agents** — describes how Gemini Enterprise connects to SAP agents through SAP's Agent Gateway
 
 3. As you read, look for the components you will encounter in the exercises ahead: SAP's Agent Gateway, Joule Agents out of the Autonomouse Enterprise and Gemini Enterprise.
 
@@ -54,7 +54,7 @@ Before diving into the hands-on steps, familiarize yourself with the reference a
 <summary>Solution — SAP Architecture Center links</summary>
 
 - [Agentic AI & AI Agents on SAP Business AI Platform](https://architecture.learning.sap.com/docs/ref-arch/98efa0)
-- [Integrating Joule Agents into Your Ecosystem](https://architecture.learning.sap.com/docs/ref-arch/fe0d1d)
+- [Integrating Joule Agents into Your Ecosystem - Gemini Enterprise Integration with Joule Agents](https://architecture.learning.sap.com/docs/ref-arch/c9a3f8)
 
 </details>
 
