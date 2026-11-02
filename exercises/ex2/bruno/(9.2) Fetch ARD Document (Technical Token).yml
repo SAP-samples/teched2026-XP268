@@ -1,0 +1,18 @@
+info:
+  name: (9.2) Fetch ARD Document (Technical Token)
+  type: http
+  seq: 7
+
+http:
+  method: get
+  url: "{{agent_gateway_host}}/v1/.well-known/ard.json"
+  headers:
+    - name: authorization
+      value: Bearer {{agent_gateway_token}}
+  auth: inherit
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
