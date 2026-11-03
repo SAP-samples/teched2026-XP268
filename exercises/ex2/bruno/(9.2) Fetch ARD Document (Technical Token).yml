@@ -8,7 +8,7 @@ http:
   url: "{{agent_gateway_host}}/v1/.well-known/ard.json"
   headers:
     - name: authorization
-      value: Bearer {{agent_gateway_token}}
+      value: Bearer {{ias_technical_token}}
   auth: inherit
 
 settings:

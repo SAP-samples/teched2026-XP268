@@ -113,6 +113,8 @@ You run discovery with the provided Bruno collection, starting from the same OAu
 <br>![](./images//bruno-5.png)
 Select the folder [`exercises/ex2/bruno/`](./bruno/)
 
+> **No Bruno installation?** Run the same API calls from [macOS Terminal or Windows PowerShell with curl](./bruno/CURL.md).
+
     Configure the environment variables:
     <br>![](./images//bruno-6.png)
     <br>![](./images//bruno-7.png)
